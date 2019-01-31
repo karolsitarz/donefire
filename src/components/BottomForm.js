@@ -1,24 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addTodo } from '../actions';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Slider from './Slider';
 
-const StyledButton = styled.div`
-  background: #fff;
-  height: 2em;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 4em;
-  border-radius: 2em;
-  box-shadow: 0 .5em 1em 0 #00000011;
+// const StyledButton = styled.div`
+//   background: #fff;
+//   height: 2em;
+//   display: inline-flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 0 4em;
+//   border-radius: 2em;
+//   box-shadow: 0 .5em 1em 0 #00000011;
 
-  > span {
-    text-transform: uppercase;
-    font-size: 0.75em;
-  }
+//   > span {
+//     text-transform: uppercase;
+//     font-size: 0.75em;
+//   }
+// `;
+
+const StyledScroll = styled.section`
+  height: 8em;
+  transition:
+    opacity .3s ease,
+    height .3s ease;
+  ${props => !props.inputOpen && css`
+    height: 0;
+    pointer-events: none;
+    opacity: 0;
+  `}
 `;
 
 const StyledForm = styled.form`
@@ -26,6 +38,16 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  position: absolute;
+  top: 2em;
+`;
+
+const StyledInput = styled.input`
+  border: 0;
+  background: #fff;
+  height: 3em;
+  border-radius: 2em;
+  padding: .5em 2em;
 `;
 
 class BottomForm extends Component {
@@ -52,7 +74,7 @@ class BottomForm extends Component {
     });
   }
   validateText (e) {
-    if (!e || !e.target || !e.target.value) return;
+    if (!e || !e.target || e.target.value == null) return;
     const text = e.target.value;
 
     if (text.length > 50) {
@@ -64,27 +86,30 @@ class BottomForm extends Component {
   }
   render () {
     return (
-      <StyledForm
-        autoComplete='off'
-        onSubmit={e => this.addTodo(e)}>
-        <input
-          name='text'
-          value={this.state.text}
-          onChange={e => this.validateText(e)} />
-        <Slider sendSlider={v => (this.slider = (v * 180).toFixed(3))} />
-        <StyledButton
-          onClick={e => this.addTodo(e)}>
-          <span>
-            new task
-          </span>
-        </StyledButton>
-      </StyledForm>
+      <StyledScroll inputOpen={this.props.UI === 'input'}>
+        <StyledForm
+          autoComplete='off'
+          onSubmit={e => this.addTodo(e)}>
+          <StyledInput
+            name='text'
+            value={this.state.text}
+            onChange={e => this.validateText(e)} />
+          <Slider sendSlider={v => (this.slider = (v * 180).toFixed(3))} />
+          {/* <StyledButton
+            onClick={e => this.addTodo(e)}>
+            <span>
+              new task
+            </span>
+          </StyledButton> */}
+        </StyledForm>
+      </StyledScroll>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  listID: state.currentList
+  listID: state.currentList,
+  UI: state.UI
 });
 
 export default connect(mapStateToProps, { addTodo })(BottomForm);

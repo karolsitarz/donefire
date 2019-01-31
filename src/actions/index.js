@@ -11,3 +11,7 @@ export const toggleTodo = ({ todoID, done }) => ({
 export const toggleUILists = () => ({
   type: 'LISTS_TOGGLE'
 });
+
+export const toggleUIToggle = () => ({
+  type: 'INPUT_TOGGLE'
+});

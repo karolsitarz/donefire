@@ -53,12 +53,12 @@ const currentList = (currentList = null, action) => {
   return currentList;
 };
 
-const UI = (currentUI = { lists: false }, action) => {
+const UI = (currentUI = '', action) => {
   if (action.type === 'LISTS_TOGGLE') {
-    return {
-      ...currentUI,
-      lists: !currentUI.lists
-    };
+    return currentUI === 'lists' ? '' : 'lists';
+  }
+  if (action.type === 'INPUT_TOGGLE') {
+    return currentUI === 'input' ? '' : 'input';
   }
   return currentUI;
 };

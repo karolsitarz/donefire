@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Container = styled.section`
   width: 100%;
-  height: 5em;
+  height: 4em;
 `;
 
 const Handle = styled.div.attrs(({ $value }) => ({

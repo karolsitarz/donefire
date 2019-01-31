@@ -6,22 +6,22 @@ const Container = styled.section`
   height: 6em;
   flex-shrink: 0;
   transition:
-    height .3s ease,
-    transform .3s ease;
+    opacity .3s ease,
+    height .3s ease;
 
   ${props => !props.listOpen && css`
     height: 0;
-    transform: translateY(-6em);
     pointer-events: none;
+    opacity: 0;
   `}
 `;
 
 const Scrolling = styled.div`
   display: flex;
   overflow-x: auto;
-  position: absolute;
   left: -2em;
   width: 100vw;
+  top: 2em;
   &::after,
   &::before {
     content: "";
@@ -40,8 +40,14 @@ const ListTile = styled.div`
   background-color: #eeeeee;
   margin-right: 1em;
   flex-shrink: 0;
+  padding: 1em;
+  display: flex;
+  align-items: flex-end;
   &:nth-last-child(1) {
     margin-right: 0;
+  }
+  > span {
+    font-size: .75em;
   }
 `;
 
@@ -53,10 +59,10 @@ const AddListTile = styled(ListTile)`
 `;
 
 const ListList = props => (
-  <Container listOpen={props.lists}>
+  <Container listOpen={props.UI === 'lists'}>
     <Scrolling>
       {Object.keys(props.list).map(key =>
-        <ListTile>
+        <ListTile key={key}>
           <span>{props.list[key].name}</span>
         </ListTile>
       )}
@@ -66,7 +72,7 @@ const ListList = props => (
 );
 
 const mapStateToProps = state => ({
-  lists: state.UI.lists,
+  UI: state.UI,
   list: state.list
 });
 
