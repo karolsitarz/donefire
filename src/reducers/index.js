@@ -4,7 +4,6 @@ import randomize from 'randomatic';
 const getID = () => new Date() * 1 + '' + randomize('Aa0', 8);
 
 const todoReducer = (currentTodos = {}, action) => {
-  console.log(currentTodos, !!action.payload, action.payload);
   if (action.type === 'TODO_ADD') {
     if (!action.payload) return currentTodos;
     const { text, listID, value } = action.payload;

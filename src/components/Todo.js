@@ -20,6 +20,19 @@ const Checkbox = styled.div`
   linear-gradient(to right bottom,
     hsl(calc(171 + ${props => props.value}), 81%, 64%) 0%,
     hsl(calc(-146 + ${props => props.value}), 100%, 72%) 100%);
+
+  &::before {
+    content: "";
+    height: .75em;
+    width: .75em;
+    background: #fff;
+    display: block;
+    border-radius: .15em;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
 `;
 
 const CheckboxHitbox = styled.div`
@@ -30,7 +43,6 @@ const CheckboxHitbox = styled.div`
 `;
 
 const TodoSpan = styled.span`
-  display: inline-flex;
   width: 100%;
   flex-grow: 1;
   font-size: .75em;
