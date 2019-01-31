@@ -77,7 +77,7 @@ const TopBar = props => (
       {props.currentList || 'no list'}
     </ListName>
     <MiniButton
-      toggle={props.UI === 'input'}
+      toggle={props.UI === 'taskinput'}
       onClick={e => props.toggleUIToggle()}>
       <AnimatedPlus>
         <PlusIcon />

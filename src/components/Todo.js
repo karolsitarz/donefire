@@ -18,8 +18,8 @@ const Checkbox = styled.div`
   border-radius: .25em;
   background-image:
   linear-gradient(to right bottom,
-    hsl(calc(171 + ${props => props.$value}), 81%, 64%) 0%,
-    hsl(calc(-146 + ${props => props.$value}), 100%, 72%) 100%);
+    hsl(${props => 171 + 1 * props.$value}, 81%, 64%) 0%,
+    hsl(${props => -146 + 1 * props.$value}, 100%, 72%) 100%);
 
   &::before {
     content: "";

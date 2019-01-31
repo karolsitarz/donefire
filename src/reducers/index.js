@@ -57,8 +57,11 @@ const UI = (currentUI = '', action) => {
   if (action.type === 'LISTS_TOGGLE') {
     return currentUI === 'lists' ? '' : 'lists';
   }
-  if (action.type === 'INPUT_TOGGLE') {
-    return currentUI === 'input' ? '' : 'input';
+  if (action.type === 'TASKINPUT_TOGGLE') {
+    return currentUI === 'taskinput' ? '' : 'taskinput';
+  }
+  if (action.type === 'LISTINPUT_TOGGLE') {
+    return currentUI === 'listinput' ? '' : 'listinput';
   }
   return currentUI;
 };

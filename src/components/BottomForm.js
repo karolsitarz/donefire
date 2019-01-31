@@ -5,22 +5,6 @@ import styled, { css } from 'styled-components';
 
 import Slider from './Slider';
 
-// const StyledButton = styled.div`
-//   background: #fff;
-//   height: 2em;
-//   display: inline-flex;
-//   justify-content: center;
-//   align-items: center;
-//   padding: 0 4em;
-//   border-radius: 2em;
-//   box-shadow: 0 .5em 1em 0 #00000011;
-
-//   > span {
-//     text-transform: uppercase;
-//     font-size: 0.75em;
-//   }
-// `;
-
 const StyledScroll = styled.section`
   height: 8em;
   flex-shrink: 0;
@@ -49,6 +33,7 @@ const StyledInput = styled.input`
   height: 3em;
   border-radius: 2em;
   padding: .5em 2em;
+  box-shadow: 0 .5em 1em 0 #0001;
 `;
 
 class BottomForm extends Component {
@@ -87,7 +72,7 @@ class BottomForm extends Component {
   }
   render () {
     return (
-      <StyledScroll inputOpen={this.props.UI === 'input'}>
+      <StyledScroll inputOpen={this.props.UI === 'taskinput'}>
         <StyledForm
           autoComplete='off'
           onSubmit={e => this.addTodo(e)}>
@@ -98,12 +83,6 @@ class BottomForm extends Component {
           <Slider
             tapHandle={e => this.addTodo(e)}
             sendSlider={v => (this.slider = (v * 180).toFixed(3))} />
-          {/* <StyledButton
-            onClick={e => this.addTodo(e)}>
-            <span>
-              new task
-            </span>
-          </StyledButton> */}
         </StyledForm>
       </StyledScroll>
     );

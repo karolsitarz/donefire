@@ -12,7 +12,7 @@ const StyledList = styled.section`
   border-radius: 1.5em;
   padding: 2em;
   overflow-y: auto;
-  box-shadow: 0 .5em 1em 0 #00000011;
+  box-shadow: 0 .5em 1em 0 #0001;
 `;
 
 const List = props => (

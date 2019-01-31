@@ -12,6 +12,7 @@ const RootStyle = styled.div`
   flex-direction: column;
   padding: 2em;
   background-color: #ddd;
+  background-image: linear-gradient(to right bottom, hsla(351, 70%, 90%, 1) 0%, hsla(216, 70%, 90%, 1) 100%);
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -31,7 +32,7 @@ const RootStyle = styled.div`
     ${props => props.UI === 'lists' && css`
       transform: translate3d(-50%,-1em,0);
     `}
-    ${props => props.UI === 'input' && css`
+    ${props => props.UI === 'taskinput' && css`
       transform: translate3d(-50%,-2em,0);
     `}
   }

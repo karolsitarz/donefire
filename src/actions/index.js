@@ -13,5 +13,5 @@ export const toggleUILists = () => ({
 });
 
 export const toggleUIToggle = () => ({
-  type: 'INPUT_TOGGLE'
+  type: 'TASKINPUT_TOGGLE'
 });
