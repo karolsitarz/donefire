@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { addTodo } from '../actions';
 import styled from 'styled-components';
 
+import Slider from './Slider';
+
 const StyledButton = styled.div`
   background: #fff;
   height: 2em;
@@ -80,7 +82,7 @@ class BottomForm extends Component {
       <StyledForm
         autoComplete='off'
         onSubmit={e => this.addTodo(e)}>
-        <input
+        {/* <input
           name='text'
           value={this.state.text}
           onChange={e => this.validateText(e)} />
@@ -89,7 +91,8 @@ class BottomForm extends Component {
           min='0'
           max='180'
           value={this.state.value}
-          onChange={e => this.validateRange(e)} />
+          onChange={e => this.validateRange(e)} /> */}
+        <Slider />
         <StyledButton
           onClick={e => this.addTodo(e)}>
           <span>
