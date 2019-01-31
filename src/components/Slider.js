@@ -71,8 +71,13 @@ export default class Slider extends Component {
       if (!e || !e.touches || !e.touches[0]) return;
 
       if (longPressInit && longPressDelta != null) {
-        // if the distance is higher than some value
-        if ((Math.pow((longPressDelta.x - e.touches[0].clientX), 2) + Math.pow((longPressDelta.y - e.touches[0].clientY), 2)) > 200) cancelLongPress();
+        // if the distance moved is higher than some value
+        if ((Math.pow((longPressDelta.x - e.touches[0].clientX), 2) + Math.pow((longPressDelta.y - e.touches[0].clientY), 2)) > 200) {
+          if (longPressTimeout) clearTimeout(longPressTimeout);
+          if (longPressInit) longPressInit = !longPressInit;
+          if (longPress) longPress = !longPress;
+          if (this.state.precise) this.setState({ precise: false });
+        }
       }
 
       let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
@@ -105,14 +110,18 @@ export default class Slider extends Component {
       }, 500);
     });
 
-    const cancelLongPress = () => {
+    handle.addEventListener('touchend', e => {
+      e.preventDefault();
+      // tap event
+      if (!longPress && longPressInit) {
+        this.props.tapHandle(e);
+      }
+
       if (longPressTimeout) clearTimeout(longPressTimeout);
-
+      if (longPressInit) longPressInit = !longPressInit;
       if (longPress) longPress = !longPress;
-      this.setState({ precise: false });
-    };
-
-    handle.ontouchend = cancelLongPress;
+      if (this.state.precise) this.setState({ precise: false });
+    });
   }
   render () {
     return (

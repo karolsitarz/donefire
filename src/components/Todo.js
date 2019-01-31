@@ -8,7 +8,7 @@ const StyledTodo = styled.div`
   min-height: 4em;
   box-shadow: inset 0 -1px #00000008;
   align-items: center;
-  order: ${props => 180 - props.value};
+  order: ${props => (180 - props.$value).toFixed(0)};
 `;
 
 const Checkbox = styled.div`
@@ -18,8 +18,8 @@ const Checkbox = styled.div`
   border-radius: .25em;
   background-image:
   linear-gradient(to right bottom,
-    hsl(calc(171 + ${props => props.value}), 81%, 64%) 0%,
-    hsl(calc(-146 + ${props => props.value}), 100%, 72%) 100%);
+    hsl(calc(171 + ${props => props.$value}), 81%, 64%) 0%,
+    hsl(calc(-146 + ${props => props.$value}), 100%, 72%) 100%);
 
   &::before {
     content: "";
@@ -51,9 +51,9 @@ const TodoSpan = styled.span`
 `;
 
 const Todo = props => (
-  <StyledTodo value={props.value} >
+  <StyledTodo $value={props.value} >
     <CheckboxHitbox>
-      <Checkbox value={props.value} />
+      <Checkbox $value={props.value} />
     </CheckboxHitbox>
     <TodoSpan>{props.text}</TodoSpan>
   </StyledTodo>

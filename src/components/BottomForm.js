@@ -23,6 +23,7 @@ import Slider from './Slider';
 
 const StyledScroll = styled.section`
   height: 8em;
+  flex-shrink: 0;
   transition:
     opacity .3s ease,
     height .3s ease;
@@ -94,7 +95,9 @@ class BottomForm extends Component {
             name='text'
             value={this.state.text}
             onChange={e => this.validateText(e)} />
-          <Slider sendSlider={v => (this.slider = (v * 180).toFixed(3))} />
+          <Slider
+            tapHandle={e => this.addTodo(e)}
+            sendSlider={v => (this.slider = (v * 180).toFixed(3))} />
           {/* <StyledButton
             onClick={e => this.addTodo(e)}>
             <span>
