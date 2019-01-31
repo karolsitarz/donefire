@@ -24,7 +24,6 @@ const ListName = styled.span`
   justify-content: center;
   align-items: center;
   font-size: 0.75em;
-  font-weight: bold;
 `;
 
 const TopBar = props => (

@@ -16,7 +16,6 @@ const StyledButton = styled.div`
   > span {
     text-transform: uppercase;
     font-size: 0.75em;
-    font-weight: bold;
   }
 `;
 

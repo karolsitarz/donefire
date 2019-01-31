@@ -14,21 +14,35 @@ const StyledTodo = styled.div`
 const Checkbox = styled.div`
   height: 1em;
   width: 1em;
+  margin-right: 1em;
+  border-radius: .25em;
   background-image:
   linear-gradient(to right bottom,
     hsl(calc(171 + ${props => props.value}), 81%, 64%) 0%,
     hsl(calc(-146 + ${props => props.value}), 100%, 72%) 100%);
 `;
 
+const CheckboxHitbox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+`;
+
 const TodoSpan = styled.span`
   display: inline-flex;
+  width: 100%;
   flex-grow: 1;
   font-size: .75em;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 const Todo = props => (
   <StyledTodo value={props.value} >
-    <Checkbox value={props.value} />
+    <CheckboxHitbox>
+      <Checkbox value={props.value} />
+    </CheckboxHitbox>
     <TodoSpan>{props.text}</TodoSpan>
   </StyledTodo>
 );
