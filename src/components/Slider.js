@@ -6,15 +6,22 @@ const Container = styled.section`
   height: 5em;
 `;
 
-const Handle = styled.div`
+const Handle = styled.div.attrs(({ $value }) => ({
+  style: {
+    transform: `translateY(-50%) translateX(calc(${$value} * (100vw - 4em - 100%)))`,
+    background: `
+      linear-gradient(to right bottom,
+        hsl(calc(171 + ${$value * 180}), 81%, 64%) 0%,
+        hsl(calc(-146 + ${$value * 180}), 100%, 72%) 100%)`
+  }
+}))`
   width: 2.5em;
   height: 2.5em;
-  background: green;
   border-radius: 50%;
   top: 50%;
   position: absolute;
-  opacity: 0.5;
-  transform: translateY(-50%) translateX(calc(${props => props.value} * (100vw - 4em - 100%)));
+  transform: translateY(-50%);
+  transition: ${props => props.precise ? 'none' : 'transform .3s ease'};
 `;
 
 const Track = styled.div`
@@ -31,7 +38,8 @@ export default class Slider extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      value: 0.5
+      value: 0.5,
+      precise: false
     };
   }
   componentDidMount () {
@@ -54,7 +62,15 @@ export default class Slider extends Component {
       }
 
       let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
-      calculated = calculated >= 0 && calculated <= 1 ? calculated : calculated > 1 ? 1 : 0;
+      if (longPress) {
+        calculated = calculated >= 0 && calculated <= 1 ? calculated : calculated > 1 ? 1 : 0;
+      } else {
+        if (calculated < 0.125) calculated = 0;
+        else if (calculated < 0.375) calculated = 0.25;
+        else if (calculated < 0.625) calculated = 0.5;
+        else if (calculated < 0.755) calculated = 0.75;
+        else calculated = 1;
+      }
 
       this.setState({ value: calculated });
     });
@@ -70,7 +86,8 @@ export default class Slider extends Component {
       longPressTimeout = setTimeout(e => {
         longPressInit = false;
         longPress = true;
-        console.log('xDDDDD');
+        this.setState({ precise: true });
+        // console.log('xDDDDD');
       }, 500);
     });
 
@@ -78,6 +95,7 @@ export default class Slider extends Component {
       if (longPressTimeout) clearTimeout(longPressTimeout);
 
       if (longPress) longPress = !longPress;
+      this.setState({ precise: false });
     };
 
     handle.ontouchend = cancelLongPress;
@@ -87,8 +105,9 @@ export default class Slider extends Component {
       <Container>
         <Track ref={e => (this.box = e)} />
         <Handle
+          precise={this.state.precise}
           ref={e => (this.handle = e)}
-          value={this.state.value} />
+          $value={this.state.value} />
       </Container>
     );
   }
