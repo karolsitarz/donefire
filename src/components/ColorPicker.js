@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Track = styled.div`
   height: 1em;
   width: 100%;
-  margin-top: 1em;
-  border-radius: .25em;
+  margin: 2em 0;
+  border-radius: .5em;
   background:
     linear-gradient(
     90deg,
@@ -20,14 +20,19 @@ const Track = styled.div`
 
 const Handle = styled.div.attrs(({ $value }) => ({
   style: {
-    transform: `translateY(-50%) translateX(calc(${$value} * (100vw - 4em - 100%)))`
+    transform: `translateX(calc(${$value} * (100vw - 4em - 100%)))`
   }
 }))`
-  height: 1em;
-  width: 1em;
-  top: 50%;
+  height: 1.5em;
+  width: 1.5em;
   position: absolute;
   transform: translateY(-50%);
+  ${props => props.$type === 1 && css`
+    bottom: 50%;
+  `}
+  ${props => props.$type === 2 && css`
+    top: 50%;
+  `}
 `;
 
 const HandleFill = styled.div.attrs(({ $value }) => ({
@@ -41,10 +46,15 @@ const HandleFill = styled.div.attrs(({ $value }) => ({
   top: 0;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px #666;
-  transform: ${props => props.$scrolling ? 'scale(2)' : 'scale(1)'};
+  box-shadow: 0 0 0 0.25em #f7f7f7, 0 0 1em #00000088;
+  transform: ${props => props.$scrolling ? 'scale(1.25) rotate(-135deg)' : 'scale(1)'};
   transition: transform .2s ease;
+  ${props => props.$type === 1 && css`
+    border-radius: 0 2em 2em 2em;
+  `}
+  ${props => props.$type === 2 && css`
+    border-radius: 2em 2em 0 2em;
+  `}
 `;
 
 export default class ColorPicker extends Component {
@@ -88,8 +98,6 @@ export default class ColorPicker extends Component {
       const low = this.state.value1 - 0.1;
       const high = this.state.value1 * 1 + 0.1;
 
-      console.log(calculated, high);
-
       if (low < 0 && calculated <= 0) calculated = high;
       if (high > 1 && calculated >= 1) calculated = low;
       if (calculated > low && calculated < this.state.value1) calculated = low;
@@ -108,16 +116,20 @@ export default class ColorPicker extends Component {
     return (
       <Track ref={e => (this.box = e)} >
         <Handle
+          $type={1}
           $value={this.state.value1}
           ref={e => (this.handle1 = e)}>
           <HandleFill
+            $type={1}
             $scrolling={this.state.scrolling1}
             $value={this.state.value1} />
         </Handle>
         <Handle
+          $type={2}
           $value={this.state.value2}
           ref={e => (this.handle2 = e)}>
           <HandleFill
+            $type={2}
             $scrolling={this.state.scrolling2}
             $value={this.state.value2} />
         </Handle>

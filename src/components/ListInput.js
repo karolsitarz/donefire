@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 import ColorPicker from './ColorPicker';
 
 const StyledScroll = styled.section`
-  height: 8em;
+  height: 10em;
   flex-shrink: 0;
   transition:
     opacity .3s ease,
