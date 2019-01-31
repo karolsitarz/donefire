@@ -89,7 +89,7 @@ class BottomForm extends Component {
           min='0'
           max='180'
           value={this.state.value}
-          onChange={e => this.setState({ value: e.target.value })} />
+          onChange={e => this.validateRange(e)} />
         <StyledButton
           onClick={e => this.addTodo(e)}>
           <span>

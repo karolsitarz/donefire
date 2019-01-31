@@ -54,8 +54,19 @@ const currentList = (currentList = null, action) => {
   return currentList;
 };
 
+const UI = (currentUI = { lists: false }, action) => {
+  if (action.type === 'LISTS_TOGGLE') {
+    return {
+      ...currentUI,
+      lists: !currentUI.lists
+    };
+  }
+  return currentUI;
+};
+
 export default combineReducers({
   todo: todoReducer,
   list: listReducer,
-  currentList
+  currentList,
+  UI
 });

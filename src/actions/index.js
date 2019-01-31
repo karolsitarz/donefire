@@ -7,3 +7,7 @@ export const toggleTodo = ({ todoID, done }) => ({
   type: 'TODO_TOGGLE_DONE',
   payload: { todoID, done }
 });
+
+export const toggleUILists = () => ({
+  type: 'LISTS_TOGGLE'
+});
