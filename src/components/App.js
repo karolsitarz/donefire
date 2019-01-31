@@ -17,6 +17,9 @@ const RootStyle = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
+  ${props => props.UI === 'listinput' && css`
+    background: #ddd;
+  `}
   &::before {
     content: "";
     display: block;
@@ -36,13 +39,16 @@ const RootStyle = styled.div`
     ${props => props.UI === 'taskinput' && css`
       transform: translate3d(-50%,-2em,0);
     `}
+    ${props => props.UI === 'listinput' && css`
+      transform: translate3d(-50%,-5em,0);
+    `}
   }
 `;
 
 // main App
 const App = props => (
   <RootStyle UI={props.UI}>
-    <List />
+    <List UI={props.UI} />
     <TopBar />
     <BottomForm />
     <ListList />

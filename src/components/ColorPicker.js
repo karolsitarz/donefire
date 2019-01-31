@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 const Track = styled.div`
   height: 1em;
   width: 100%;
-  margin: 2em 0;
+  margin: 2.5em 0;
   border-radius: .5em;
   background:
     linear-gradient(
@@ -47,13 +47,14 @@ const HandleFill = styled.div.attrs(({ $value }) => ({
   width: 100%;
   height: 100%;
   box-shadow: 0 0 0 0.25em #f7f7f7, 0 0 1em #00000088;
-  transform: ${props => props.$scrolling ? 'scale(1.25) rotate(-135deg)' : 'scale(1)'};
   transition: transform .2s ease;
   ${props => props.$type === 1 && css`
     border-radius: 0 2em 2em 2em;
+    transform: ${props => props.$scrolling ? 'rotate(-135deg) translateY(25%) translateX(25%)' : 'scale(0.9)'};
   `}
   ${props => props.$type === 2 && css`
     border-radius: 2em 2em 0 2em;
+    transform: ${props => props.$scrolling ? 'rotate(-135deg) translateY(-25%) translateX(-25%)' : 'scale(0.9)'};
   `}
 `;
 

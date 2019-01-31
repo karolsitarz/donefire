@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import styled, { css } from 'styled-components';
 
 import ColorPicker from './ColorPicker';
+import getLightness from '../utils/colorUtils';
 
 const StyledScroll = styled.section`
-  height: 10em;
+  height: 14em;
   flex-shrink: 0;
   transition:
     opacity .3s ease,
@@ -35,20 +36,71 @@ const StyledForm = styled.form`
   top: 2em;
 `;
 
+const ListTile = styled.div.attrs(({ $color1, $color2 }) => ({
+  style: {
+    background: `
+      linear-gradient(to right bottom,
+        hsl(${351 + $color1 * 360},81%,64%) 0%,
+        hsl(${351 + $color2 * 360},81%,64%) 100%)`
+  }
+}))`
+  height: 4em;
+  width: 6em;
+  border-radius: 1em;
+  background-color: #eeeeee;
+  flex-shrink: 0;
+  padding: 1em;
+  display: flex;
+  align-items: flex-end;
+  margin: auto;
+  color: ${props => props.$light ? '#fff' : ''};
+  > span {
+    font-size: .75em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1em;
+  }
+`;
+
 class ListInput extends Component {
   constructor (props) {
     super(props);
-    this.color1 = 0.25;
-    this.color2 = 0.75;
+    this.state = {
+      color1: 0.25,
+      color2: 0.75,
+      text: ''
+    };
+  }
+  validateText (e) {
+    if (!e || !e.target || e.target.value == null) return;
+    const text = e.target.value;
+
+    if (text.length > 20) {
+      this.setState({ text: text.substring(0, 20) });
+      return;
+    }
+
+    this.setState({ text });
   }
   render () {
+    console.log(getLightness(this.state.color1, this.state.color2));
     return (
       <StyledScroll inputOpen={this.props.UI === 'listinput'}>
         <StyledForm>
-          <StyledInput />
+          <StyledInput
+            value={this.state.text}
+            onChange={e => this.validateText(e)} />
           <ColorPicker
-            handleValue1={e => (this.color1 = e)}
-            handleValue2={e => (this.color2 = e)} />
+            handleValue1={e => this.setState({ color1: e })}
+            handleValue2={e => this.setState({ color2: e })} />
+          <ListTile
+            $light={getLightness(this.state.color1, this.state.color2) < 185}
+            $color1={this.state.color1}
+            $color2={this.state.color2} >
+            <span>
+              {this.state.text}
+            </span>
+          </ListTile>
         </StyledForm>
       </StyledScroll>
     );

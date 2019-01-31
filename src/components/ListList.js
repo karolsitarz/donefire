@@ -50,6 +50,9 @@ const ListTile = styled.div`
   }
   > span {
     font-size: .75em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1em;
   }
 `;
 
