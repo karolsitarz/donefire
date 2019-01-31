@@ -38,16 +38,17 @@ const StyledForm = styled.form`
 class ListInput extends Component {
   constructor (props) {
     super(props);
-    this.color1 = 0;
-    this.color1 = 90;
+    this.color1 = 0.25;
+    this.color2 = 0.75;
   }
   render () {
     return (
       <StyledScroll inputOpen={this.props.UI === 'listinput'}>
         <StyledForm>
           <StyledInput />
-          <ColorPicker handleValue={e => (this.color1 = e)} />
-          <ColorPicker handleValue={e => (this.color2 = e)} />
+          <ColorPicker
+            handleValue1={e => (this.color1 = e)}
+            handleValue2={e => (this.color2 = e)} />
         </StyledForm>
       </StyledScroll>
     );

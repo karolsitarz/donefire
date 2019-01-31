@@ -51,35 +51,75 @@ export default class ColorPicker extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      value: 0.5,
-      scrolling: false
+      value1: 0.25,
+      value2: 0.75,
+      scrolling1: false,
+      scrolling2: false
     };
   }
   componentDidMount () {
-    const { handle } = this;
+    const { handle1, handle2 } = this;
     let { left, width } = this.box.getBoundingClientRect();
     window.addEventListener('resize', e => ({ left, width } = this.box.getBoundingClientRect()));
 
-    handle.addEventListener('touchmove', e => {
-      if (!this.state.scrolling) this.setState({ scrolling: true });
+    handle1.addEventListener('touchmove', e => {
+      if (!this.state.scrolling1) this.setState({ scrolling1: true });
       let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
-      calculated = calculated >= 0 && calculated <= 1 ? calculated : calculated > 1 ? 1 : 0;
-      this.setState({ value: calculated });
-      this.props.handleValue(calculated);
+      const low = this.state.value2 - 0.1;
+      const high = this.state.value2 * 1 + 0.1;
+
+      if (low < 0 && calculated <= 0) calculated = high;
+      if (high > 1 && calculated >= 1) calculated = low;
+      if (calculated > low && calculated < this.state.value2) calculated = low;
+      if (calculated < high && calculated >= this.state.value2) calculated = high;
+      if (calculated < 0) calculated = 0;
+      if (calculated > 1) calculated = 1;
+
+      this.setState({ value1: calculated });
+      this.props.handleValue1(calculated);
     });
-    handle.addEventListener('touchend', e => {
-      if (this.state.scrolling) this.setState({ scrolling: false });
+    handle1.addEventListener('touchend', e => {
+      if (this.state.scrolling1) this.setState({ scrolling1: false });
+    });
+
+    handle2.addEventListener('touchmove', e => {
+      if (!this.state.scrolling2) this.setState({ scrolling2: true });
+      let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
+      const low = this.state.value1 - 0.1;
+      const high = this.state.value1 * 1 + 0.1;
+
+      console.log(calculated, high);
+
+      if (low < 0 && calculated <= 0) calculated = high;
+      if (high > 1 && calculated >= 1) calculated = low;
+      if (calculated > low && calculated < this.state.value1) calculated = low;
+      if (calculated < high && calculated >= this.state.value1) calculated = high;
+      if (calculated < 0) calculated = 0;
+      if (calculated > 1) calculated = 1;
+
+      this.setState({ value2: calculated });
+      this.props.handleValue2(calculated);
+    });
+    handle2.addEventListener('touchend', e => {
+      if (this.state.scrolling2) this.setState({ scrolling2: false });
     });
   }
   render () {
     return (
       <Track ref={e => (this.box = e)} >
         <Handle
-          $value={this.state.value}
-          ref={e => (this.handle = e)}>
+          $value={this.state.value1}
+          ref={e => (this.handle1 = e)}>
           <HandleFill
-            $scrolling={this.state.scrolling}
-            $value={this.state.value} />
+            $scrolling={this.state.scrolling1}
+            $value={this.state.value1} />
+        </Handle>
+        <Handle
+          $value={this.state.value2}
+          ref={e => (this.handle2 = e)}>
+          <HandleFill
+            $scrolling={this.state.scrolling2}
+            $value={this.state.value2} />
         </Handle>
       </Track>
     );
