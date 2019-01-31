@@ -37,6 +37,7 @@ class BottomForm extends Component {
   }
   addTodo (e) {
     e.preventDefault();
+    if (this.state.text.trim().length <= 1) return;
 
     this.props.addTodo({
       text: this.state.text,
@@ -48,6 +49,32 @@ class BottomForm extends Component {
       text: ''
     });
   }
+  validateText (e) {
+    if (!e || !e.target || !e.target.value) return;
+    const text = e.target.value;
+
+    if (text.length > 50) {
+      this.setState({ text: text.substring(0, 50) });
+      return;
+    }
+
+    this.setState({ text });
+  }
+  validateRange (e) {
+    if (!e || !e.target || !e.target.value) return;
+    const value = e.target.value;
+
+    if (value > 180) {
+      this.setState({ value: 180 });
+      return;
+    }
+    if (value < 0) {
+      this.setState({ value: 0 });
+      return;
+    }
+
+    this.setState({ value });
+  }
   render () {
     return (
       <StyledForm
@@ -56,7 +83,7 @@ class BottomForm extends Component {
         <input
           name='text'
           value={this.state.text}
-          onChange={e => this.setState({ text: e.target.value })} />
+          onChange={e => this.validateText(e)} />
         <input
           type='range'
           min='0'

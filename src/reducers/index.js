@@ -20,6 +20,18 @@ const todoReducer = (currentTodos = {}, action) => {
       }
     };
   }
+  if (action.type === 'TODO_DONE_TOGGLE') {
+    if (!action.payload) return currentTodos;
+    const { todoID, done } = action.payload;
+
+    return {
+      ...currentTodos,
+      [todoID]: {
+        ...currentTodos[todoID],
+        done: done || !currentTodos[todoID].done
+      }
+    };
+  }
   /*
     id - auto
     tekst
