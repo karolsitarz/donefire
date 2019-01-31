@@ -33,9 +33,9 @@ class BottomForm extends Component {
     super(props);
 
     this.state = {
-      text: '',
-      value: 90
+      text: ''
     };
+    this.slider = 90;
   }
   addTodo (e) {
     e.preventDefault();
@@ -43,7 +43,7 @@ class BottomForm extends Component {
 
     this.props.addTodo({
       text: this.state.text,
-      value: this.state.value,
+      value: this.slider,
       listID: this.props.listID
     });
 
@@ -62,37 +62,16 @@ class BottomForm extends Component {
 
     this.setState({ text });
   }
-  validateRange (e) {
-    if (!e || !e.target || !e.target.value) return;
-    const value = e.target.value;
-
-    if (value > 180) {
-      this.setState({ value: 180 });
-      return;
-    }
-    if (value < 0) {
-      this.setState({ value: 0 });
-      return;
-    }
-
-    this.setState({ value });
-  }
   render () {
     return (
       <StyledForm
         autoComplete='off'
         onSubmit={e => this.addTodo(e)}>
-        {/* <input
+        <input
           name='text'
           value={this.state.text}
           onChange={e => this.validateText(e)} />
-        <input
-          type='range'
-          min='0'
-          max='180'
-          value={this.state.value}
-          onChange={e => this.validateRange(e)} /> */}
-        <Slider />
+        <Slider sendSlider={v => (this.slider = (v * 180).toFixed(3))} />
         <StyledButton
           onClick={e => this.addTodo(e)}>
           <span>

@@ -14,7 +14,8 @@ const store = applyMiddleware(save({
   debounce: 500
 }))(createStore)(reducers, load({
   states: ['todo', 'list', 'currentList'],
-  namespace: 'donefire'
+  namespace: 'donefire',
+  disableWarnings: true
 }));
 
 ReactDOM.render((
