@@ -20,29 +20,10 @@ const ListName = styled.span`
   font-size: 0.75em;
 `;
 
-const Animated = styled.div`
-  pointer-events: none;
-  width: inherit;
-  height: inherit;
-  fill: inherit;
-`;
-
-const AnimatedArrowDown = styled(Animated)``;
-
-const AnimatedPlus = styled(Animated)``;
-
 const MiniButton = styled.div`
   width: 2em;
   height: 2em;
   fill: #666;
-  > ${AnimatedArrowDown} {
-    transform: ${props => !props.toggle ? 'scaleY(1)' : 'scaleY(-1)'};
-    transition: transform .3s cubic-bezier(0.33, 0.37, 0.16, 2.35);
-  }
-  > ${AnimatedPlus} {
-    transform: ${props => !props.toggle ? 'rotate(0deg)' : 'rotate(45deg)'};
-    transition: transform .3s ease;
-  }
   &::before {
     content: "";
     position: absolute;
@@ -57,7 +38,31 @@ const MiniButton = styled.div`
     background: #0001;
     opacity: 0;
     transform: scale(0.25);
-    ${props => props.toggle && css`
+  }
+`;
+
+const ArrowButton = styled(MiniButton)`
+  > svg {
+    transform: ${props => props.toggle === 'lists' ? 'rotate(-180deg)' : ''};
+    transform: ${props => props.toggle === 'listinput' ? 'rotate(-90deg)' : ''};
+    /* transition: transform .3s cubic-bezier(0.33, 0.37, 0.16, 2.35); */
+    transition: transform .3s ease;
+  }
+  &::before {
+    ${props => (props.toggle === 'lists' || props.toggle === 'listinput') && css`
+      opacity: 1;
+      transform: scale(1);
+    `}
+  }
+`;
+
+const PlusButton = styled(MiniButton)`
+  > svg {
+    transform: ${props => props.toggle === 'taskinput' ? 'rotate(45deg)' : ''};
+    transition: transform .3s ease;
+  }
+  &::before {
+    ${props => props.toggle === 'taskinput' && css`
       opacity: 1;
       transform: scale(1);
     `}
@@ -66,23 +71,19 @@ const MiniButton = styled.div`
 
 const TopBar = props => (
   <StyledTopBar>
-    <MiniButton
-      toggle={props.UI === 'lists'}
+    <ArrowButton
+      toggle={props.UI}
       onClick={e => props.toggleUILists()}>
-      <AnimatedArrowDown>
-        <ArrowDownIcon />
-      </AnimatedArrowDown>
-    </MiniButton>
+      <ArrowDownIcon />
+    </ArrowButton>
     <ListName>
       {props.currentList || 'no list'}
     </ListName>
-    <MiniButton
-      toggle={props.UI === 'taskinput'}
+    <PlusButton
+      toggle={props.UI}
       onClick={e => props.toggleUIToggle()}>
-      <AnimatedPlus>
-        <PlusIcon />
-      </AnimatedPlus>
-    </MiniButton>
+      <PlusIcon />
+    </PlusButton>
   </StyledTopBar>
 );
 

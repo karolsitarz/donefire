@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import List from './List';
 import BottomForm from './BottomForm';
 import ListList from './ListList';
+import ListInput from './ListInput';
 import TopBar from './TopBar';
 
 const RootStyle = styled.div`
@@ -45,6 +46,7 @@ const App = props => (
     <TopBar />
     <BottomForm />
     <ListList />
+    <ListInput />
   </RootStyle>
 );
 

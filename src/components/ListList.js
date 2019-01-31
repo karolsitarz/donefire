@@ -2,6 +2,8 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
+import { toggleUIListInput } from '../actions';
+
 const Container = styled.section`
   height: 6em;
   flex-shrink: 0;
@@ -66,7 +68,7 @@ const ListList = props => (
           <span>{props.list[key].name}</span>
         </ListTile>
       )}
-      <AddListTile />
+      <AddListTile onClick={e => props.toggleUIListInput()} />
     </Scrolling>
   </Container>
 );
@@ -76,4 +78,4 @@ const mapStateToProps = state => ({
   list: state.list
 });
 
-export default connect(mapStateToProps)(ListList);
+export default connect(mapStateToProps, { toggleUIListInput })(ListList);
