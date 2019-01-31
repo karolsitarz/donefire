@@ -1,15 +1,24 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import ReactDOM from 'react-dom';
+import { save, load } from 'redux-localstorage-simple';
 
 import GlobalStyles from './style/global-styles';
 import reducers from './reducers';
-
 import App from './components/App';
 
+const store = applyMiddleware(save({
+  states: ['todo', 'list', 'currentList'],
+  namespace: 'donefire',
+  debounce: 500
+}))(createStore)(reducers, load({
+  states: ['todo', 'list', 'currentList'],
+  namespace: 'donefire'
+}));
+
 ReactDOM.render((
-  <Provider store={createStore(reducers)}>
+  <Provider store={store}>
     <GlobalStyles />
     <App />
   </Provider>),

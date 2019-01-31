@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 const Container = styled.section`
   height: 6em;
+  flex-shrink: 0;
   transition:
     height .3s ease,
     transform .3s ease;

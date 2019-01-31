@@ -23,6 +23,7 @@ const StyledForm = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 `;
 
 class BottomForm extends Component {
