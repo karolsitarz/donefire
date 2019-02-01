@@ -12,7 +12,7 @@ export const toggleTodo = ({ todoID, done }) => ({
 
 export const switchToUI = name => ({
   type: 'UI_SWITCH',
-  payload: { name }
+  payload: name
   // taskinput
   // lists
   // listinput
@@ -21,4 +21,9 @@ export const switchToUI = name => ({
 export const addList = ({ name, c1, c2 }) => ({
   type: 'LIST_ADD',
   payload: { name, c1, c2, light: getLightness(c1, c2) }
+});
+
+export const currentList = ({ id, name, c1, c2 }) => ({
+  type: 'CURRENT_LIST_CHANGE',
+  payload: { id, name, c1, c2 }
 });

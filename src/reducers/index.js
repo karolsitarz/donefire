@@ -38,24 +38,35 @@ const listReducer = (currentData = {}, action) => {
   if (action.type === 'LIST_ADD') {
     if (!action.payload) return currentData;
     const { name, c1, c2, light } = action.payload;
-    const todoID = getID();
+    const listID = getID();
 
     return {
       ...currentData,
-      [todoID]: { name, c1, c2, light }
+      [listID]: { name, c1, c2, light }
     };
   }
   return currentData;
 };
 
-const currentList = (currentList = null, action) => {
+const currentList = (currentList = {}, action) => {
+  if (action.type === 'CURRENT_LIST_CHANGE') {
+    if (!action.payload) return currentList;
+
+    if ('id' in currentList && currentList.id === action.payload.id) return {};
+    return {
+      id: action.payload.id,
+      name: action.payload.name,
+      c1: action.payload.c1,
+      c2: action.payload.c2
+    };
+  }
   return currentList;
 };
 
 const UI = (currentUI = '', action) => {
   if (action.type === 'UI_SWITCH') {
     if (!action.payload) return currentUI;
-    return currentUI === action.payload.name ? '' : action.payload.name;
+    return currentUI === action.payload ? '' : action.payload;
   }
   return currentUI;
 };

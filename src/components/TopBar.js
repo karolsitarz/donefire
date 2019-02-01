@@ -82,7 +82,7 @@ const TopBar = props => (
       <ArrowDownIcon />
     </ArrowButton>
     <ListName>
-      {props.currentList || 'no list available'}
+      {props.currentList.name || ''}
     </ListName>
     <PlusButton
       currentList={props.currentList}

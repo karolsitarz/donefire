@@ -48,12 +48,14 @@ class BottomForm extends Component {
   addTodo (e) {
     e.preventDefault();
     if (this.state.text.trim().length <= 1) return;
-    if (this.state.listID == null) return;
+    if (!this.props.currentList ||
+      !('id' in this.props.currentList) ||
+      !this.props.currentList.id) return;
 
     this.props.addTodo({
       text: this.state.text,
       value: this.slider,
-      listID: this.props.listID
+      listID: this.props.currentList.id
     });
 
     this.setState({
@@ -91,7 +93,7 @@ class BottomForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  listID: state.currentList,
+  currentList: state.currentList,
   UI: state.UI
 });
 

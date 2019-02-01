@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
-import { switchToUI } from '../actions';
+import { switchToUI, currentList } from '../actions';
 
 const Container = styled.section`
   height: 6em;
@@ -73,6 +73,12 @@ const ListList = props => (
     <Scrolling>
       {Object.keys(props.list).map(key =>
         <ListTile
+          onClick={e => props.currentList({
+            id: key,
+            name: props.list[key].name,
+            c1: props.list[key].c1,
+            c2: props.list[key].c2
+          })}
           $light={props.list[key].light}
           $c1={props.list[key].c1}
           $c2={props.list[key].c2}
@@ -90,4 +96,4 @@ const mapStateToProps = state => ({
   list: state.list
 });
 
-export default connect(mapStateToProps, { switchToUI })(ListList);
+export default connect(mapStateToProps, { switchToUI, currentList })(ListList);
