@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
 import Todo from './Todo';
@@ -13,12 +13,20 @@ const StyledList = styled.section`
   padding: 2em;
   overflow-y: auto;
   box-shadow: 0 .5em 1em 0 #0001;
+  transition:
+    opacity .3s ease,
+    transform .3s ease;
+  ${props => props.UI === 'listinput' && css`
+    /* transform: translateY(-3em); */
+    opacity: 0;
+    pointer-events: none;
+  `}
 `;
 
 const List = props => (
-  <StyledList>
+  <StyledList UI={props.UI}>
     {Object.keys(props.todo).map(key =>
-      props.currentList !== props.todo[key].listID ? null : (
+      ('id' in props.currentList && props.currentList.id) !== props.todo[key].listID ? null : (
         <Todo
           key={key}
           id={key}
@@ -30,7 +38,8 @@ const List = props => (
 
 const mapStateToProps = state => ({
   todo: state.todo,
-  currentList: state.currentList
+  currentList: state.currentList,
+  UI: state.UI
 });
 
 export default connect(mapStateToProps)(List);

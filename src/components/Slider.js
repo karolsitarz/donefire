@@ -36,6 +36,14 @@ const HandleFill = styled.div.attrs(({ $value }) => ({
   border-radius: 50%;
   transform: ${props => props.precise ? 'scale(1.2)' : 'scale(1)'};
   transition: ${props => props.precise ? 'transform .25s cubic-bezier(0.33, 0.37, 0.16, 2.35)' : 'transform .2s ease'};
+  > svg {
+    width: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    fill: #fff;
+    pointer-events: none;
+  }
 `;
 
 const Track = styled.div`
@@ -133,7 +141,11 @@ export default class Slider extends Component {
           $value={this.state.value}>
           <HandleFill
             precise={this.state.precise}
-            $value={this.state.value} />
+            $value={this.state.value}>
+            <svg viewBox='0 0 450 450'>
+              <path d='M422.843,111.442L168.284,366a20.361,20.361,0,0,1-28.568,0L26.579,252.863a20,20,0,0,1,28.284-28.284L154,323.716,394.558,83.157A20,20,0,1,1,422.843,111.442Z' />
+            </svg>
+          </HandleFill>
         </Handle>
       </Container>
     );

@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
-import { toggleUIListInput } from '../actions';
+import { switchToUI, currentListChange } from '../actions';
 
 const Container = styled.section`
   height: 6em;
@@ -45,12 +45,27 @@ const ListTile = styled.div`
   padding: 1em;
   display: flex;
   align-items: flex-end;
+  transition: 
+    opacity .3s ease,
+    transform .3s ease;
   &:nth-last-child(1) {
     margin-right: 0;
   }
   > span {
     font-size: .75em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1em;
   }
+  background: 
+    linear-gradient(to right bottom,
+      hsl(${props => 351 + props.$c1 * 360},81%,64%) 0%,
+      hsl(${props => 351 + props.$c2 * 360},81%,64%) 100%);
+  color: ${props => props.$light ? '#fff' : ''};
+  ${props => props.$selected && css`
+    transform: scale(0.85);
+    opacity: 0.5;
+  `}
 `;
 
 const AddListTile = styled(ListTile)`
@@ -64,18 +79,30 @@ const ListList = props => (
   <Container listOpen={props.UI === 'lists'}>
     <Scrolling>
       {Object.keys(props.list).map(key =>
-        <ListTile key={key}>
+        <ListTile
+          onClick={e => props.currentListChange({
+            id: key,
+            name: props.list[key].name,
+            c1: props.list[key].c1,
+            c2: props.list[key].c2
+          })}
+          $selected={('id' in props.currentList) && key === props.currentList.id}
+          $light={props.list[key].light}
+          $c1={props.list[key].c1}
+          $c2={props.list[key].c2}
+          key={key}>
           <span>{props.list[key].name}</span>
         </ListTile>
       )}
-      <AddListTile onClick={e => props.toggleUIListInput()} />
+      <AddListTile onClick={e => props.switchToUI('listinput')} />
     </Scrolling>
   </Container>
 );
 
 const mapStateToProps = state => ({
   UI: state.UI,
-  list: state.list
+  list: state.list,
+  currentList: state.currentList
 });
 
-export default connect(mapStateToProps, { toggleUIListInput })(ListList);
+export default connect(mapStateToProps, { switchToUI, currentListChange })(ListList);

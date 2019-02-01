@@ -48,11 +48,14 @@ class BottomForm extends Component {
   addTodo (e) {
     e.preventDefault();
     if (this.state.text.trim().length <= 1) return;
+    if (!this.props.currentList ||
+      !('id' in this.props.currentList) ||
+      !this.props.currentList.id) return;
 
     this.props.addTodo({
       text: this.state.text,
       value: this.slider,
-      listID: this.props.listID
+      listID: this.props.currentList.id
     });
 
     this.setState({
@@ -77,6 +80,7 @@ class BottomForm extends Component {
           autoComplete='off'
           onSubmit={e => this.addTodo(e)}>
           <StyledInput
+            placeholder='your amazing task text'
             name='text'
             value={this.state.text}
             onChange={e => this.validateText(e)} />
@@ -90,7 +94,7 @@ class BottomForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  listID: state.currentList,
+  currentList: state.currentList,
   UI: state.UI
 });
 
