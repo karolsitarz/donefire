@@ -51,8 +51,8 @@ const App = props => (
     <List UI={props.UI} />
     <TopBar />
     <BottomForm />
-    <ListList />
     <ListInput />
+    <ListList />
   </RootStyle>
 );
 

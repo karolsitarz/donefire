@@ -43,6 +43,6 @@ module.exports = (env, argv) => [
       pathinfo: false,
       path: path.join(__dirname, './dist'),
       filename: 'bundle.js',
-      publicPath: './'
+      publicPath: '/'
     }
   }];

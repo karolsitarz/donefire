@@ -62,7 +62,7 @@ export default class ColorPicker extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      value1: 0.25,
+      value1: 0.5,
       value2: 0.75,
       scrolling1: false,
       scrolling2: false

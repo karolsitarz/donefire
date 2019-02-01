@@ -31,21 +31,20 @@ const todoReducer = (currentTodos = {}, action) => {
       }
     };
   }
-  /*
-    id - auto
-    tekst
-    wartosc
-    lista
-  */
   return currentTodos;
 };
 
 const listReducer = (currentData = {}, action) => {
-  /*
-    id - auto
-    nazwa
-    kolory
-  */
+  if (action.type === 'LIST_ADD') {
+    if (!action.payload) return currentData;
+    const { name, c1, c2, light } = action.payload;
+    const todoID = getID();
+
+    return {
+      ...currentData,
+      [todoID]: { name, c1, c2, light }
+    };
+  }
   return currentData;
 };
 
@@ -54,14 +53,9 @@ const currentList = (currentList = null, action) => {
 };
 
 const UI = (currentUI = '', action) => {
-  if (action.type === 'LISTS_TOGGLE') {
-    return currentUI === 'lists' ? '' : 'lists';
-  }
-  if (action.type === 'TASKINPUT_TOGGLE') {
-    return currentUI === 'taskinput' ? '' : 'taskinput';
-  }
-  if (action.type === 'LISTINPUT_TOGGLE') {
-    return currentUI === 'listinput' ? '' : 'listinput';
+  if (action.type === 'UI_SWITCH') {
+    if (!action.payload) return currentUI;
+    return currentUI === action.payload.name ? '' : action.payload.name;
   }
   return currentUI;
 };

@@ -38,4 +38,4 @@ export const average = (h1, h2) => ({
 
 export const lightness = c => (c.r * 299 + c.g * 587 + c.b * 114) / 1000;
 
-export default (h1, h2) => lightness(average(HSLtoRGB(351 + h1 * 360), HSLtoRGB(351 + h2 * 360)));
+export default (h1, h2) => lightness(average(HSLtoRGB(351 + h1 * 360), HSLtoRGB(351 + h2 * 360))) < 185;

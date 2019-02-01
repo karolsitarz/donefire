@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 
 import ColorPicker from './ColorPicker';
 import getLightness from '../utils/colorUtils';
+import { addList, switchToUI } from '../actions';
 
 const StyledScroll = styled.section`
   height: 14em;
@@ -68,36 +69,51 @@ class ListInput extends Component {
     this.state = {
       color1: 0.5,
       color2: 0.75,
-      text: ''
+      name: ''
     };
+    this.getLightness = () => getLightness(this.state.color1, this.state.color2);
+    this.submitList = this.submitList.bind(this);
   }
   validateText (e) {
     if (!e || !e.target || e.target.value == null) return;
-    const text = e.target.value;
+    const name = e.target.value;
 
-    if (text.length > 20) {
-      this.setState({ text: text.substring(0, 20) });
+    if (name.length > 20) {
+      this.setState({ text: name.substring(0, 20) });
       return;
     }
 
-    this.setState({ text });
+    this.setState({ name });
+  }
+  submitList (e) {
+    e.preventDefault();
+    if (this.state.name.length > 20) return;
+
+    this.props.addList({
+      name: this.state.name,
+      c1: this.state.color1,
+      c2: this.state.color2
+    });
+    this.setState({ name: '' });
+    this.props.switchToUI('lists');
   }
   render () {
     return (
       <StyledScroll inputOpen={this.props.UI === 'listinput'}>
         <StyledForm>
           <StyledInput
-            value={this.state.text}
+            value={this.state.name}
             onChange={e => this.validateText(e)} />
           <ColorPicker
             handleValue1={e => this.setState({ color1: e })}
             handleValue2={e => this.setState({ color2: e })} />
           <ListTile
-            $light={getLightness(this.state.color1, this.state.color2) < 185}
+            onClick={e => this.submitList(e)}
+            $light={this.getLightness()}
             $color1={this.state.color1}
             $color2={this.state.color2} >
             <span>
-              {this.state.text}
+              {this.state.name}
             </span>
           </ListTile>
         </StyledForm>
@@ -110,4 +126,4 @@ const mapStateToProps = state => ({
   UI: state.UI
 });
 
-export default connect(mapStateToProps)(ListInput);
+export default connect(mapStateToProps, { addList, switchToUI })(ListInput);

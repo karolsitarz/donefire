@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
-import { toggleUILists, toggleUIToggle } from '../actions';
+import { switchToUI } from '../actions';
 import { ArrowDown as ArrowDownIcon, Plus as PlusIcon } from '../style/icons';
 
 const StyledTopBar = styled.div`
@@ -24,6 +24,7 @@ const MiniButton = styled.div`
   width: 2em;
   height: 2em;
   fill: #666;
+  transition: opacity .3s ease;
   &::before {
     content: "";
     position: absolute;
@@ -67,21 +68,26 @@ const PlusButton = styled(MiniButton)`
       transform: scale(1);
     `}
   }
+  ${props => (props.toggle === 'listinput' || props.currentList == null) && css`
+    pointer-events: none;
+    opacity: 0;
+  `}
 `;
 
 const TopBar = props => (
   <StyledTopBar>
     <ArrowButton
       toggle={props.UI}
-      onClick={e => props.toggleUILists()}>
+      onClick={e => props.switchToUI('lists')}>
       <ArrowDownIcon />
     </ArrowButton>
     <ListName>
-      {props.currentList || 'no list'}
+      {props.currentList || 'no list available'}
     </ListName>
     <PlusButton
+      currentList={props.currentList}
       toggle={props.UI}
-      onClick={e => props.toggleUIToggle()}>
+      onClick={e => props.switchToUI('taskinput')}>
       <PlusIcon />
     </PlusButton>
   </StyledTopBar>
@@ -92,4 +98,4 @@ const mapStateToProps = state => ({
   UI: state.UI
 });
 
-export default connect(mapStateToProps, { toggleUILists, toggleUIToggle })(TopBar);
+export default connect(mapStateToProps, { switchToUI })(TopBar);
