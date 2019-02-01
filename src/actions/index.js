@@ -23,7 +23,7 @@ export const addList = ({ name, c1, c2 }) => ({
   payload: { name, c1, c2, light: getLightness(c1, c2) }
 });
 
-export const currentList = ({ id, name, c1, c2 }) => ({
+export const currentListChange = ({ id, name, c1, c2 }) => ({
   type: 'CURRENT_LIST_CHANGE',
   payload: { id, name, c1, c2 }
 });

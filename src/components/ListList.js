@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
-import { switchToUI, currentList } from '../actions';
+import { switchToUI, currentListChange } from '../actions';
 
 const Container = styled.section`
   height: 6em;
@@ -45,6 +45,9 @@ const ListTile = styled.div`
   padding: 1em;
   display: flex;
   align-items: flex-end;
+  transition: 
+    opacity .3s ease,
+    transform .3s ease;
   &:nth-last-child(1) {
     margin-right: 0;
   }
@@ -59,6 +62,10 @@ const ListTile = styled.div`
       hsl(${props => 351 + props.$c1 * 360},81%,64%) 0%,
       hsl(${props => 351 + props.$c2 * 360},81%,64%) 100%);
   color: ${props => props.$light ? '#fff' : ''};
+  ${props => props.$selected && css`
+    transform: scale(0.85);
+    opacity: 0.5;
+  `}
 `;
 
 const AddListTile = styled(ListTile)`
@@ -73,12 +80,13 @@ const ListList = props => (
     <Scrolling>
       {Object.keys(props.list).map(key =>
         <ListTile
-          onClick={e => props.currentList({
+          onClick={e => props.currentListChange({
             id: key,
             name: props.list[key].name,
             c1: props.list[key].c1,
             c2: props.list[key].c2
           })}
+          $selected={('id' in props.currentList) && key === props.currentList.id}
           $light={props.list[key].light}
           $c1={props.list[key].c1}
           $c2={props.list[key].c2}
@@ -93,7 +101,8 @@ const ListList = props => (
 
 const mapStateToProps = state => ({
   UI: state.UI,
-  list: state.list
+  list: state.list,
+  currentList: state.currentList
 });
 
-export default connect(mapStateToProps, { switchToUI, currentList })(ListList);
+export default connect(mapStateToProps, { switchToUI, currentListChange })(ListList);

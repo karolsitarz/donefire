@@ -102,6 +102,7 @@ class ListInput extends Component {
       <StyledScroll inputOpen={this.props.UI === 'listinput'}>
         <StyledForm>
           <StyledInput
+            placeholder='your amazing list name'
             value={this.state.name}
             onChange={e => this.validateText(e)} />
           <ColorPicker

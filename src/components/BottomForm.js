@@ -80,6 +80,7 @@ class BottomForm extends Component {
           autoComplete='off'
           onSubmit={e => this.addTodo(e)}>
           <StyledInput
+            placeholder='your amazing task text'
             name='text'
             value={this.state.text}
             onChange={e => this.validateText(e)} />

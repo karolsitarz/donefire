@@ -84,4 +84,8 @@ export default createGlobalStyle`
   input {
     color: inherit;
   }
+  ::placeholder {
+    /* text-align: center; */
+    opacity: 0.5;
+  }
 `;
