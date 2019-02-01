@@ -68,7 +68,7 @@ const PlusButton = styled(MiniButton)`
       transform: scale(1);
     `}
   }
-  ${props => (props.toggle === 'listinput' || props.currentList == null) && css`
+  ${props => (props.toggle === 'listinput' || !('id' in props.currentList)) && css`
     pointer-events: none;
     opacity: 0;
   `}
