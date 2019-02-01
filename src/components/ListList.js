@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
@@ -75,29 +75,36 @@ const AddListTile = styled(ListTile)`
     linear-gradient(#eee, #eee);
 `;
 
-const ListList = props => (
-  <Container listOpen={props.UI === 'lists'}>
-    <Scrolling>
-      {Object.keys(props.list).map(key =>
-        <ListTile
-          onClick={e => props.currentListChange({
-            id: key,
-            name: props.list[key].name,
-            c1: props.list[key].c1,
-            c2: props.list[key].c2
-          })}
-          $selected={('id' in props.currentList) && key === props.currentList.id}
-          $light={props.list[key].light}
-          $c1={props.list[key].c1}
-          $c2={props.list[key].c2}
-          key={key}>
-          <span>{props.list[key].name}</span>
-        </ListTile>
-      )}
-      <AddListTile onClick={e => props.switchToUI('listinput')} />
-    </Scrolling>
-  </Container>
-);
+class ListList extends Component {
+  // componentDidMount () {
+
+  // }
+  render () {
+    return (
+      <Container listOpen={this.props.UI === 'lists'}>
+        <Scrolling>
+          {Object.keys(this.props.list).map(key =>
+            <ListTile
+              onClick={e => this.props.currentListChange({
+                id: key,
+                name: this.props.list[key].name,
+                c1: this.props.list[key].c1,
+                c2: this.props.list[key].c2
+              })}
+              $selected={('id' in this.props.currentList) && key === this.props.currentList.id}
+              $light={this.props.list[key].light}
+              $c1={this.props.list[key].c1}
+              $c2={this.props.list[key].c2}
+              key={key}>
+              <span>{this.props.list[key].name}</span>
+            </ListTile>
+          )}
+          <AddListTile onClick={e => this.props.switchToUI('listinput')} />
+        </Scrolling>
+      </Container>
+    );
+  }
+}
 
 const mapStateToProps = state => ({
   UI: state.UI,

@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReactDOM from 'react-dom';
 import { save, load } from 'redux-localstorage-simple';
+import './utils/touchEvents';
 
 import GlobalStyles from './style/global-styles';
 import reducers from './reducers';
