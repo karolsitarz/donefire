@@ -31,7 +31,8 @@ const List = props => (
           key={key}
           id={key}
           text={props.todo[key].text}
-          value={props.todo[key].value} />
+          value={props.todo[key].value}
+          done={props.todo[key].done} />
       ))}
   </StyledList>
 );

@@ -9,6 +9,8 @@ const StyledTodo = styled.div`
   box-shadow: inset 0 -1px #00000008;
   align-items: center;
   order: ${props => (180 - props.$value).toFixed(0)};
+  transition: opacity .3s ease;
+  opacity: ${props => !props.done ? 1 : 0.5};
 `;
 
 const Checkbox = styled.div`
@@ -32,6 +34,8 @@ const Checkbox = styled.div`
     top: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
+    transition: transform .3s ease;
+    transform: ${props => !props.done ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)'};
   }
 `;
 
@@ -51,9 +55,14 @@ const TodoSpan = styled.span`
 `;
 
 const Todo = props => (
-  <StyledTodo $value={props.value} >
-    <CheckboxHitbox>
-      <Checkbox $value={props.value} />
+  <StyledTodo
+    done={props.done}
+    $value={props.value} >
+    <CheckboxHitbox
+      onClick={e => props.toggleTodo(props.id)} >
+      <Checkbox
+        done={props.done}
+        $value={props.value} />
     </CheckboxHitbox>
     <TodoSpan>{props.text}</TodoSpan>
   </StyledTodo>

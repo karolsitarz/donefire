@@ -19,7 +19,7 @@ const todoReducer = (currentTodos = {}, action) => {
       }
     };
   }
-  if (action.type === 'TODO_DONE_TOGGLE') {
+  if (action.type === 'TODO_TOGGLE_DONE') {
     if (!action.payload) return currentTodos;
     const { todoID, done } = action.payload;
 

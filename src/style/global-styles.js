@@ -38,6 +38,7 @@ export default createGlobalStyle`
     box-sizing: border-box;
     position: relative;
     font-family: 'Montserrat', 'Helvetica', 'Helvetica Neue', sans-serif;
+    font-weight: 600;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-tap-highlight-color: transparent;
   }
