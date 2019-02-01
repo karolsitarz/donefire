@@ -66,7 +66,7 @@ class ListInput extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      color1: 0.25,
+      color1: 0.5,
       color2: 0.75,
       text: ''
     };
@@ -83,7 +83,6 @@ class ListInput extends Component {
     this.setState({ text });
   }
   render () {
-    console.log(getLightness(this.state.color1, this.state.color2));
     return (
       <StyledScroll inputOpen={this.props.UI === 'listinput'}>
         <StyledForm>

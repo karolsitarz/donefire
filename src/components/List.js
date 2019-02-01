@@ -17,7 +17,7 @@ const StyledList = styled.section`
     opacity .3s ease,
     transform .3s ease;
   ${props => props.UI === 'listinput' && css`
-    transform: translateY(calc(-100% - 3em));
+    transform: translateY(-5em);
     opacity: 0;
     pointer-events: none;
   `}
