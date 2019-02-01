@@ -13,7 +13,10 @@ const RootStyle = styled.div`
   flex-direction: column;
   padding: 2em;
   background-color: #ddd;
-  background-image: linear-gradient(to right bottom, hsla(351, 70%, 90%, 1) 0%, hsla(216, 70%, 90%, 1) 100%);
+  /* background-image: linear-gradient(to right bottom, hsla(351, 70%, 90%, 1) 0%, hsla(216, 70%, 90%, 1) 100%); */
+  background-image: linear-gradient(to right bottom,
+      hsl(${props => 351 + props.$c1 * 360},81%,64%) 0%,
+      hsl(${props => 351 + props.$c2 * 360},81%,64%) 100%);
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -47,7 +50,10 @@ const RootStyle = styled.div`
 
 // main App
 const App = props => (
-  <RootStyle UI={props.UI}>
+  <RootStyle
+    $c1={'c1' in props.currentList ? props.currentList.c1 : '#ddd'}
+    $c2={'c2' in props.currentList ? props.currentList.c2 : '#ddd'}
+    UI={props.UI}>
     <List UI={props.UI} />
     <TopBar />
     <BottomForm />
@@ -57,7 +63,8 @@ const App = props => (
 );
 
 const mapStateToProps = state => ({
-  UI: state.UI
+  UI: state.UI,
+  currentList: state.currentList
 });
 
 export default connect(mapStateToProps)(App);
