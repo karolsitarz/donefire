@@ -68,7 +68,7 @@ const PlusButton = styled(MiniButton)`
       transform: scale(1);
     `}
   }
-  ${props => (props.toggle === 'listinput' || !('id' in props.currentList)) && css`
+  ${props => (props.toggle === 'listinput' || props.currentList.id === 0) && css`
     pointer-events: none;
     opacity: 0;
   `}
@@ -82,7 +82,7 @@ const TopBar = props => (
       <ArrowDownIcon />
     </ArrowButton>
     <ListName>
-      {props.currentList.name || ''}
+      {props.UI !== 'listinput' ? props.currentList.name || '' : 'a new list'}
     </ListName>
     <PlusButton
       currentList={props.currentList}

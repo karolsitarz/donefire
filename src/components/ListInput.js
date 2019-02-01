@@ -100,7 +100,7 @@ class ListInput extends Component {
   render () {
     return (
       <StyledScroll inputOpen={this.props.UI === 'listinput'}>
-        <StyledForm>
+        <StyledForm onSubmit={e => this.submitList(e)}>
           <StyledInput
             placeholder='your amazing list name'
             value={this.state.name}

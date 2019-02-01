@@ -26,7 +26,7 @@ const StyledList = styled.section`
 const List = props => (
   <StyledList UI={props.UI}>
     {Object.keys(props.todo).map(key =>
-      ('id' in props.currentList && props.currentList.id) !== props.todo[key].listID ? null : (
+      props.currentList.id !== 0 && (props.currentList.id !== props.todo[key].listID) ? null : (
         <Todo
           key={key}
           id={key}

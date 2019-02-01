@@ -48,11 +48,13 @@ const listReducer = (currentData = {}, action) => {
   return currentData;
 };
 
-const currentList = (currentList = {}, action) => {
+const currentList = (currentList = { id: 0, name: 'all tasks' }, action) => {
   if (action.type === 'CURRENT_LIST_CHANGE') {
     if (!action.payload) return currentList;
 
-    if ('id' in currentList && currentList.id === action.payload.id) return {};
+    if ('id' in currentList && currentList.id === action.payload.id) {
+      return { id: 0, name: 'all tasks' };
+    }
     return {
       id: action.payload.id,
       name: action.payload.name,
