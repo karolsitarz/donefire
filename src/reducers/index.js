@@ -19,7 +19,7 @@ const todoReducer = (currentTodos = {}, action) => {
       }
     };
   }
-  if (action.type === 'TODO_TOGGLE_DONE') {
+  if (action.type === 'TODO_DONE_TOGGLE') {
     if (!action.payload) return currentTodos;
     const { todoID, done } = action.payload;
 
@@ -30,6 +30,15 @@ const todoReducer = (currentTodos = {}, action) => {
         done: done || !currentTodos[todoID].done
       }
     };
+  }
+  if (action.type === 'TODO_DELETE') {
+    if (!action.payload) return currentTodos;
+    if (action.payload in currentTodos) {
+      const safe = Object.assign({}, currentTodos);
+      delete safe[action.payload];
+      return safe;
+    }
+    return currentTodos;
   }
   return currentTodos;
 };

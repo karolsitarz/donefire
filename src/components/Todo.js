@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { toggleTodo } from '../actions';
+import { toggleTodo, deleteTodo } from '../actions';
 import { Check as CheckIcon } from '../style/icons';
 
 const StyledTodo = styled.div`
@@ -67,20 +67,37 @@ const TodoSpan = styled.span`
   overflow: hidden;
 `;
 
-const Todo = props => (
-  <StyledTodo
-    done={props.done}
-    $value={props.value} >
-    <CheckboxHitbox
-      onClick={e => props.toggleTodo(props.id)} >
-      <Checkbox
-        done={props.done}
-        $value={props.value}>
-        <CheckIcon />
-      </Checkbox>
-    </CheckboxHitbox>
-    <TodoSpan>{props.text}</TodoSpan>
-  </StyledTodo>
-);
+class Todo extends Component {
+  componentDidMount () {
+    const { checkbox } = this;
 
-export default connect(null, { toggleTodo })(Todo);
+    checkbox.setupTouchEvents();
+    checkbox.addEventListener('touchtap', e => {
+      this.props.toggleTodo(this.props.id);
+    });
+    checkbox.addEventListener('touchpress', e => {
+      if (window.confirm('delete?')) {
+        this.props.deleteTodo(this.props.id);
+      }
+    });
+  }
+  render () {
+    return (
+      <StyledTodo
+        done={this.props.done}
+        $value={this.props.value} >
+        <CheckboxHitbox
+          ref={e => (this.checkbox = e)} >
+          <Checkbox
+            done={this.props.done}
+            $value={this.props.value}>
+            <CheckIcon />
+          </Checkbox>
+        </CheckboxHitbox>
+        <TodoSpan>{this.props.text}</TodoSpan>
+      </StyledTodo>
+    );
+  }
+}
+
+export default connect(null, { toggleTodo, deleteTodo })(Todo);

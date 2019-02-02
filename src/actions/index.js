@@ -6,8 +6,13 @@ export const addTodo = ({ text, value, listID }) => ({
 });
 
 export const toggleTodo = (todoID, done) => ({
-  type: 'TODO_TOGGLE_DONE',
+  type: 'TODO_DONE_TOGGLE',
   payload: { todoID, done }
+});
+
+export const deleteTodo = todoID => ({
+  type: 'TODO_DELETE',
+  payload: todoID
 });
 
 export const switchToUI = name => ({

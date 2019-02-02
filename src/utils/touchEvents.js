@@ -50,3 +50,5 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
     });
   }
 });
+
+// TODO REMOVE LISTENERS
