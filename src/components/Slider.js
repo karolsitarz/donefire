@@ -89,7 +89,7 @@ export default class Slider extends Component {
 
       this.setState({ value: calculated });
       this.props.sendSlider(calculated);
-    });
+    }, { passive: true });
 
     handle.addEventListener('touchpress', e => {
       this.setState({ precise: true });

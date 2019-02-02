@@ -19,7 +19,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
           if (longPress) longPress = !longPress;
         }
       }
-    });
+    }, { passive: true });
 
     this.addEventListener('touchstart', e => {
       // e.preventDefault();
@@ -35,7 +35,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
 
         this.dispatchEvent(longPressEvent);
       }, delay);
-    });
+    }, { passive: true });
 
     this.addEventListener('touchend', e => {
       // e.preventDefault();
@@ -47,7 +47,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
       if (longPressTimeout) clearTimeout(longPressTimeout);
       if (longPressInit) longPressInit = !longPressInit;
       if (longPress) longPress = !longPress;
-    });
+    }, { passive: true });
   }
 });
 

@@ -88,10 +88,10 @@ class ColorPicker extends Component {
       if (calculated > 1) calculated = 1;
 
       this.props.listInputDataChange({ c1: calculated });
-    });
+    }, { passive: true });
     handle1.addEventListener('touchend', e => {
       if (this.state.scrolling1) this.setState({ scrolling1: false });
-    });
+    }, { passive: true });
 
     handle2.addEventListener('touchmove', e => {
       if (!this.state.scrolling2) this.setState({ scrolling2: true });
@@ -107,10 +107,10 @@ class ColorPicker extends Component {
       if (calculated > 1) calculated = 1;
 
       this.props.listInputDataChange({ c2: calculated });
-    });
+    }, { passive: true });
     handle2.addEventListener('touchend', e => {
       if (this.state.scrolling2) this.setState({ scrolling2: false });
-    });
+    }, { passive: true });
   }
   render () {
     return (
