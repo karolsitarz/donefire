@@ -48,14 +48,12 @@ class BottomForm extends Component {
   addTodo (e) {
     e.preventDefault();
     if (this.state.text.trim().length <= 1) return;
-    if (!this.props.currentList ||
-      !('id' in this.props.currentList) ||
-      !this.props.currentList.id) return;
+    if (this.props.currentList === null) return;
 
     this.props.addTodo({
       text: this.state.text,
       value: this.slider,
-      listID: this.props.currentList.id
+      listID: this.props.currentList
     });
 
     this.setState({

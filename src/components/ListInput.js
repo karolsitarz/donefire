@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import ColorPicker from './ColorPicker';
 import getLightness from '../utils/colorUtils';
-import { addList, switchToUI } from '../actions';
+import { addList, editList, switchToUI, listInputDataChange } from '../actions';
 
 const StyledScroll = styled.section`
   height: 14em;
@@ -66,12 +66,7 @@ const ListTile = styled.div.attrs(({ $color1, $color2 }) => ({
 class ListInput extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      color1: 0.5,
-      color2: 0.75,
-      name: ''
-    };
-    this.getLightness = () => getLightness(this.state.color1, this.state.color2);
+    this.getLightness = () => getLightness(this.props.listInputData.c1, this.props.listInputData.c2);
     this.submitList = this.submitList.bind(this);
   }
   validateText (e) {
@@ -79,22 +74,22 @@ class ListInput extends Component {
     const name = e.target.value;
 
     if (name.length > 20) {
-      this.setState({ text: name.substring(0, 20) });
+      this.props.listInputDataChange({ name: name.substring(0, 20) });
       return;
     }
 
-    this.setState({ name });
+    this.props.listInputDataChange({ name });
   }
   submitList (e) {
     e.preventDefault();
-    if (this.state.name.length > 20) return;
+    const { name, listID, c1, c2 } = this.props.listInputData;
+    if (name.length > 20) return;
 
-    this.props.addList({
-      name: this.state.name,
-      c1: this.state.color1,
-      c2: this.state.color2
-    });
-    this.setState({ name: '' });
+    if (listID == null) {
+      this.props.addList({ name, c1, c2 });
+    } else {
+      this.props.editList({ listID, name, c1, c2 });
+    }
     this.props.switchToUI('lists');
   }
   render () {
@@ -103,18 +98,16 @@ class ListInput extends Component {
         <StyledForm onSubmit={e => this.submitList(e)}>
           <StyledInput
             placeholder='your amazing list name'
-            value={this.state.name}
+            value={this.props.listInputData.name}
             onChange={e => this.validateText(e)} />
-          <ColorPicker
-            handleValue1={e => this.setState({ color1: e })}
-            handleValue2={e => this.setState({ color2: e })} />
+          <ColorPicker />
           <ListTile
             onClick={e => this.submitList(e)}
             $light={this.getLightness()}
-            $color1={this.state.color1}
-            $color2={this.state.color2} >
+            $color1={this.props.listInputData.c1}
+            $color2={this.props.listInputData.c2} >
             <span>
-              {this.state.name}
+              {this.props.listInputData.name}
             </span>
           </ListTile>
         </StyledForm>
@@ -124,7 +117,8 @@ class ListInput extends Component {
 }
 
 const mapStateToProps = state => ({
-  UI: state.UI
+  UI: state.UI,
+  listInputData: state.listInputData
 });
 
-export default connect(mapStateToProps, { addList, switchToUI })(ListInput);
+export default connect(mapStateToProps, { addList, editList, switchToUI, listInputDataChange })(ListInput);

@@ -5,7 +5,7 @@ export const addTodo = ({ text, value, listID }) => ({
   payload: { text, value, listID }
 });
 
-export const toggleTodo = ({ todoID, done }) => ({
+export const toggleTodo = (todoID, done) => ({
   type: 'TODO_TOGGLE_DONE',
   payload: { todoID, done }
 });
@@ -23,7 +23,17 @@ export const addList = ({ name, c1, c2 }) => ({
   payload: { name, c1, c2, light: getLightness(c1, c2) }
 });
 
-export const currentListChange = ({ id, name, c1, c2 }) => ({
+export const editList = ({ listID, name, c1, c2 }) => ({
+  type: 'LIST_EDIT',
+  payload: { listID, name, c1, c2, light: getLightness(c1, c2) }
+});
+
+export const currentListChange = id => ({
   type: 'CURRENT_LIST_CHANGE',
-  payload: { id, name, c1, c2 }
+  payload: id
+});
+
+export const listInputDataChange = ({ name, c1, c2, listID }) => ({
+  type: 'LISTINPUT_DATA',
+  payload: { name, c1, c2, listID }
 });

@@ -51,8 +51,8 @@ const RootStyle = styled.div`
 // main App
 const App = props => (
   <RootStyle
-    $c1={'c1' in props.currentList ? props.currentList.c1 : '#ddd'}
-    $c2={'c2' in props.currentList ? props.currentList.c2 : '#ddd'}
+    $c1={props.currentList !== null ? props.list[props.currentList].c1 : '#ddd'}
+    $c2={props.currentList !== null ? props.list[props.currentList].c2 : '#ddd'}
     UI={props.UI}>
     <List UI={props.UI} />
     <TopBar />
@@ -64,7 +64,8 @@ const App = props => (
 
 const mapStateToProps = state => ({
   UI: state.UI,
-  currentList: state.currentList
+  currentList: state.currentList,
+  list: state.list
 });
 
 export default connect(mapStateToProps)(App);

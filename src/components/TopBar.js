@@ -68,34 +68,44 @@ const PlusButton = styled(MiniButton)`
       transform: scale(1);
     `}
   }
-  ${props => (props.toggle === 'listinput' || props.currentList.id === 0) && css`
+  ${props => (props.toggle === 'listinput' || props.currentList === null) && css`
     pointer-events: none;
     opacity: 0;
   `}
 `;
 
-const TopBar = props => (
-  <StyledTopBar>
-    <ArrowButton
-      toggle={props.UI}
-      onClick={e => props.switchToUI('lists')}>
-      <ArrowDownIcon />
-    </ArrowButton>
-    <ListName>
-      {props.UI !== 'listinput' ? props.currentList.name || '' : 'a new list'}
-    </ListName>
-    <PlusButton
-      currentList={props.currentList}
-      toggle={props.UI}
-      onClick={e => props.switchToUI('taskinput')}>
-      <PlusIcon />
-    </PlusButton>
-  </StyledTopBar>
-);
+const TopBar = props => {
+  let title = 'all tasks';
+  if (props.currentList !== null) title = props.list[props.currentList].name || '';
+  if (props.UI === 'listinput') {
+    title = !props.edit ? 'a new list' : 'edit list';
+  }
+
+  return (
+    <StyledTopBar>
+      <ArrowButton
+        toggle={props.UI}
+        onClick={e => props.switchToUI('lists')}>
+        <ArrowDownIcon />
+      </ArrowButton>
+      <ListName>
+        {title}
+      </ListName>
+      <PlusButton
+        currentList={props.currentList}
+        toggle={props.UI}
+        onClick={e => props.switchToUI('taskinput')}>
+        <PlusIcon />
+      </PlusButton>
+    </StyledTopBar>
+  );
+};
 
 const mapStateToProps = state => ({
   currentList: state.currentList,
-  UI: state.UI
+  UI: state.UI,
+  edit: state.listInputData.listID,
+  list: state.list
 });
 
 export default connect(mapStateToProps, { switchToUI })(TopBar);

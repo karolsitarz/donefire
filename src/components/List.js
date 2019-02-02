@@ -26,12 +26,13 @@ const StyledList = styled.section`
 const List = props => (
   <StyledList UI={props.UI}>
     {Object.keys(props.todo).map(key =>
-      props.currentList.id !== 0 && (props.currentList.id !== props.todo[key].listID) ? null : (
+      props.currentList !== null && (props.currentList !== props.todo[key].listID) ? null : (
         <Todo
           key={key}
           id={key}
           text={props.todo[key].text}
-          value={props.todo[key].value} />
+          value={props.todo[key].value}
+          done={props.todo[key].done} />
       ))}
   </StyledList>
 );
