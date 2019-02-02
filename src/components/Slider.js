@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Check as CheckIcon } from '../style/icons';
 
 const Container = styled.section`
   width: 100%;
@@ -112,9 +113,7 @@ export default class Slider extends Component {
           <HandleFill
             precise={this.state.precise}
             $value={this.state.value}>
-            <svg viewBox='0 0 450 450'>
-              <path d='M422.843,111.442L168.284,366a20.361,20.361,0,0,1-28.568,0L26.579,252.863a20,20,0,0,1,28.284-28.284L154,323.716,394.558,83.157A20,20,0,1,1,422.843,111.442Z' />
-            </svg>
+            <CheckIcon />
           </HandleFill>
         </Handle>
       </Container>

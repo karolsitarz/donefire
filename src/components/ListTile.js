@@ -29,7 +29,7 @@ const StyledListTile = styled.div`
       hsl(${props => 351 + props.$c2 * 360},81%,64%) 100%);
   color: ${props => props.$light ? '#fff' : ''};
   ${props => props.$selected && css`
-    transform: scale(0.85);
+    transform: scale(0.9);
     opacity: 0.5;
   `}
 `;
