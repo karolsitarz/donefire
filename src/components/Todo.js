@@ -81,6 +81,9 @@ class Todo extends Component {
       }
     });
   }
+  componentWillUnmount () {
+    this.checkbox.deleteTouchEvents();
+  }
   render () {
     return (
       <StyledTodo

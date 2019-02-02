@@ -53,6 +53,9 @@ class ListTile extends Component {
       this.props.currentListChange(this.props.data.id);
     });
   }
+  componentWillUnmount () {
+    this.tileRef.deleteTouchEvents();
+  }
   render () {
     const { id, name, c1, c2, light } = this.props.data;
     const { currentList } = this.props;
