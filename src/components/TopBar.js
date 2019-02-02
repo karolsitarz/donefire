@@ -68,14 +68,15 @@ const PlusButton = styled(MiniButton)`
       transform: scale(1);
     `}
   }
-  ${props => (props.toggle === 'listinput' || props.currentList.id === 0) && css`
+  ${props => (props.toggle === 'listinput' || props.currentList === null) && css`
     pointer-events: none;
     opacity: 0;
   `}
 `;
 
 const TopBar = props => {
-  let title = props.currentList.name || '';
+  let title = 'all tasks';
+  if (props.currentList !== null) title = props.list[props.currentList].name || '';
   if (props.UI === 'listinput') {
     title = !props.edit ? 'a new list' : 'edit list';
   }
@@ -103,7 +104,8 @@ const TopBar = props => {
 const mapStateToProps = state => ({
   currentList: state.currentList,
   UI: state.UI,
-  edit: state.listInputData.listID
+  edit: state.listInputData.listID,
+  list: state.list
 });
 
 export default connect(mapStateToProps, { switchToUI })(TopBar);

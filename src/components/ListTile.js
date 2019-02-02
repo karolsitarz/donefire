@@ -50,12 +50,7 @@ class ListTile extends Component {
       this.props.switchToUI('listinput');
     });
     tileRef.addEventListener('touchtap', e => {
-      this.props.currentListChange({
-        id: this.props.data.id,
-        name: this.props.data.name,
-        c1: this.props.data.c1,
-        c2: this.props.data.c2
-      });
+      this.props.currentListChange(this.props.data.id);
     });
   }
   render () {
@@ -68,7 +63,7 @@ class ListTile extends Component {
         $c1={c1}
         $c2={c2}
         $light={light}
-        $selected={('id' in currentList) && id === currentList.id}>
+        $selected={id === currentList}>
         <span>{name}</span>
       </StyledListTile>
     );
