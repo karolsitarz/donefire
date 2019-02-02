@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { toggleTodo } from '../actions';
+import { Check as CheckIcon } from '../style/icons';
 
 const StyledTodo = styled.div`
   display: flex;
@@ -37,6 +38,18 @@ const Checkbox = styled.div`
     transition: transform .3s ease;
     transform: ${props => !props.done ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)'};
   }
+
+  > svg {
+    fill: #fff;
+    height: 70%;
+    width: 70%;
+    position: absolute;
+    left: 50%
+    top: 50%;
+    pointer-events: none;
+    transform: ${props => !props.done ? 'translate(-50%, -50%) scale(0)' : 'translate(-50%, -50%) scale(1)'};
+    transition: transform .3s ease;
+  }
 `;
 
 const CheckboxHitbox = styled.div`
@@ -62,7 +75,9 @@ const Todo = props => (
       onClick={e => props.toggleTodo(props.id)} >
       <Checkbox
         done={props.done}
-        $value={props.value} />
+        $value={props.value}>
+        <CheckIcon />
+      </Checkbox>
     </CheckboxHitbox>
     <TodoSpan>{props.text}</TodoSpan>
   </StyledTodo>
