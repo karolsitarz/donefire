@@ -66,7 +66,7 @@ module.exports = (env, argv) => [
     output: {
       pathinfo: false,
       path: path.join(__dirname, './dist'),
-      filename: 'bundle.[chunkhash].js',
-      publicPath: PUBLIC_PATH
+      filename: argv.mode === 'production' ? 'bundle.[chunkhash].js' : 'bundle.js',
+      publicPath: argv.mode === 'production' ? PUBLIC_PATH : '/'
     }
   }];
