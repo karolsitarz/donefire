@@ -23,6 +23,18 @@ const StyledList = styled.section`
   `}
 `;
 
+const NoTasks = styled.span`
+  margin: auto;
+  align-items: center;
+  text-align: center;
+  font-size: 0.75em;
+  opacity: 0.5;
+
+  * ~ & {
+    display: none;
+  }
+`;
+
 const List = props => (
   <StyledList UI={props.UI}>
     {Object.keys(props.todo).map(key =>
@@ -34,6 +46,9 @@ const List = props => (
           value={props.todo[key].value}
           done={props.todo[key].done} />
       ))}
+    <NoTasks>
+      there are no tasks.
+    </NoTasks>
   </StyledList>
 );
 
