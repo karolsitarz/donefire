@@ -86,7 +86,7 @@ export default createGlobalStyle`
     color: inherit;
   }
   ::placeholder {
-    /* text-align: center; */
-    opacity: 0.5;
+    text-align: center;
+    opacity: 0.25;
   }
 `;

@@ -28,6 +28,11 @@ export const editList = ({ listID, name, c1, c2 }) => ({
   payload: { listID, name, c1, c2, light: getLightness(c1, c2) }
 });
 
+export const deleteList = listID => ({
+  type: 'LIST_DELETE',
+  payload: listID
+});
+
 export const currentListChange = id => ({
   type: 'CURRENT_LIST_CHANGE',
   payload: id

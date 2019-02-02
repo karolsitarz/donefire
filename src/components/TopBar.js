@@ -2,28 +2,31 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
-import { switchToUI } from '../actions';
-import { ArrowDown as ArrowDownIcon, Plus as PlusIcon } from '../style/icons';
+import { switchToUI, deleteList, currentListChange } from '../actions';
+import { ArrowDown as ArrowDownIcon, Plus as PlusIcon, Trash as TrashIcon } from '../style/icons';
 
 const StyledTopBar = styled.div`
   height: 2em;
   flex-shrink: 0;
-  display: flex;
   margin-top: 2em;
 `;
 
 const ListName = styled.span`
-  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.75em;
+  position: absolute;
+  height: 100%;
+  width: calc(100% - (4em / 0.75));
+  left: calc(2em / 0.75);
 `;
 
 const MiniButton = styled.div`
   width: 2em;
   height: 2em;
   fill: #666;
+  position: absolute;
   transition: opacity .3s ease;
   &::before {
     content: "";
@@ -43,6 +46,7 @@ const MiniButton = styled.div`
 `;
 
 const ArrowButton = styled(MiniButton)`
+  left: 0;
   > svg {
     transform: ${props => props.toggle === 'lists' ? 'rotate(-180deg)' : ''};
     transform: ${props => props.toggle === 'listinput' ? 'rotate(-90deg)' : ''};
@@ -58,6 +62,7 @@ const ArrowButton = styled(MiniButton)`
 `;
 
 const PlusButton = styled(MiniButton)`
+  right: 0;
   > svg {
     transform: ${props => props.toggle === 'taskinput' ? 'rotate(45deg)' : ''};
     transition: transform .3s ease;
@@ -68,7 +73,14 @@ const PlusButton = styled(MiniButton)`
       transform: scale(1);
     `}
   }
-  ${props => (props.toggle === 'listinput' || props.currentList === null) && css`
+  ${props => props.toggle === 'listinput' && css`
+    pointer-events: none;
+    opacity: 0;
+  `}
+`;
+const TrashButton = styled(MiniButton)`
+  right: 0;
+  ${props => (props.toggle !== 'listinput' || props.edit === null) && css`
     pointer-events: none;
     opacity: 0;
   `}
@@ -97,6 +109,20 @@ const TopBar = props => {
         onClick={e => props.switchToUI('taskinput')}>
         <PlusIcon />
       </PlusButton>
+      <TrashButton
+        edit={props.edit}
+        toggle={props.UI}
+        onClick={e => {
+          if (window.confirm('delete?')) {
+            if (props.currentList === props.edit) {
+              props.currentListChange(props.currentList);
+            }
+            props.deleteList(props.edit);
+            props.switchToUI('lists');
+          }
+        }}>
+        <TrashIcon />
+      </TrashButton>
     </StyledTopBar>
   );
 };
@@ -108,4 +134,4 @@ const mapStateToProps = state => ({
   list: state.list
 });
 
-export default connect(mapStateToProps, { switchToUI })(TopBar);
+export default connect(mapStateToProps, { switchToUI, deleteList, currentListChange })(TopBar);

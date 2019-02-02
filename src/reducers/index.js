@@ -54,6 +54,16 @@ const listReducer = (currentData = {}, action) => {
       [listID]: { name, c1, c2, light }
     };
   }
+  if (action.type === 'LIST_DELETE') {
+    if (!action.payload) return currentData;
+    if (action.payload in currentData) {
+      const safe = Object.assign({}, currentData);
+      delete safe[action.payload];
+      return safe;
+    }
+
+    return currentData;
+  }
   return currentData;
 };
 
