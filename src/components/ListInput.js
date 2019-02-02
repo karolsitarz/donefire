@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import ColorPicker from './ColorPicker';
 import getLightness from '../utils/colorUtils';
-import { addList, switchToUI, listInputDataChange } from '../actions';
+import { addList, editList, switchToUI, listInputDataChange } from '../actions';
 
 const StyledScroll = styled.section`
   height: 14em;
@@ -82,14 +82,14 @@ class ListInput extends Component {
   }
   submitList (e) {
     e.preventDefault();
-    if (this.props.listInputData.name.length > 20) return;
+    const { name, listID, c1, c2 } = this.props.listInputData;
+    if (name.length > 20) return;
 
-    this.props.addList({
-      name: this.props.listInputData.name,
-      c1: this.props.listInputData.c1,
-      c2: this.props.listInputData.c2
-    });
-    this.props.listInputDataChange({ name: '' });
+    if (listID == null) {
+      this.props.addList({ name, c1, c2 });
+    } else {
+      this.props.editList({ listID, name, c1, c2 });
+    }
     this.props.switchToUI('lists');
   }
   render () {
@@ -121,4 +121,4 @@ const mapStateToProps = state => ({
   listInputData: state.listInputData
 });
 
-export default connect(mapStateToProps, { addList, switchToUI, listInputDataChange })(ListInput);
+export default connect(mapStateToProps, { addList, editList, switchToUI, listInputDataChange })(ListInput);

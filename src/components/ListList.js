@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
-import { switchToUI } from '../actions';
+import { switchToUI, listInputDataChange } from '../actions';
 import ListTile from './ListTile';
 
 const Container = styled.section`
@@ -58,7 +58,15 @@ const ListList = props => (
           key={key}
           data={{ ...props.list[key], id: key }} />
       )}
-      <AddListTile onClick={e => props.switchToUI('listinput')} />
+      <AddListTile onClick={e => {
+        props.listInputDataChange({
+          name: '',
+          c1: 0.5,
+          c2: 0.75,
+          listID: null
+        });
+        props.switchToUI('listinput');
+      }} />
     </Scrolling>
   </Container>
 );
@@ -68,4 +76,4 @@ const mapStateToProps = state => ({
   list: state.list
 });
 
-export default connect(mapStateToProps, { switchToUI })(ListList);
+export default connect(mapStateToProps, { switchToUI, listInputDataChange })(ListList);

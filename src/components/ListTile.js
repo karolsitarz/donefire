@@ -44,7 +44,8 @@ class ListTile extends Component {
       this.props.listInputDataChange({
         name: this.props.data.name,
         c1: this.props.data.c1,
-        c2: this.props.data.c2
+        c2: this.props.data.c2,
+        listID: this.props.data.id
       });
       this.props.switchToUI('listinput');
     });

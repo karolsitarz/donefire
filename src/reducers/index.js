@@ -45,6 +45,15 @@ const listReducer = (currentData = {}, action) => {
       [listID]: { name, c1, c2, light }
     };
   }
+  if (action.type === 'LIST_EDIT') {
+    if (!action.payload) return currentData;
+    const { listID, name, c1, c2, light } = action.payload;
+
+    return {
+      ...currentData,
+      [listID]: { name, c1, c2, light }
+    };
+  }
   return currentData;
 };
 
@@ -76,14 +85,16 @@ const UIReducer = (currentUI = '', action) => {
 const listInputDataReducer = (currentSettings = {
   name: '',
   c1: 0.5,
-  c2: 0.75
+  c2: 0.75,
+  listID: null
 }, action) => {
   if (action.type === 'LISTINPUT_DATA') {
     if (!action.payload) return currentSettings;
     return {
       name: action.payload.name != null ? action.payload.name : currentSettings.name,
       c1: action.payload.c1 != null ? action.payload.c1 : currentSettings.c1,
-      c2: action.payload.c2 != null ? action.payload.c2 : currentSettings.c2
+      c2: action.payload.c2 != null ? action.payload.c2 : currentSettings.c2,
+      listID: action.payload.listID != null ? action.payload.listID : currentSettings.listID
     };
   }
   return currentSettings;
