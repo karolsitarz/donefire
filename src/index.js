@@ -31,3 +31,9 @@ ReactDOM.render((
     <App />
   </Provider>),
 document.getElementById('container'));
+
+(function () {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js');
+  }
+})();

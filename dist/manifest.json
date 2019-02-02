@@ -3,12 +3,12 @@
   "name": "donefire",
   "icons": [
       {
-        "src": "/app_icon/donefire_icon-192.png",
+        "src": "./app_icon/donefire_icon-192.png",
         "type": "image/png",
         "sizes": "192x192"
       },
       {
-        "src": "/icon/donefire_icon-512.png",
+        "src": "./app_icon/donefire_icon-512.png",
         "type": "image/png",
         "sizes": "512x512"
       }
