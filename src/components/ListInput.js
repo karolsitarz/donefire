@@ -83,7 +83,7 @@ class ListInput extends Component {
   submitList (e) {
     e.preventDefault();
     const { name, listID, c1, c2 } = this.props.listInputData;
-    if (name.length > 20) return;
+    if (name.length > 20 || name.length < 1) return;
 
     if (listID == null) {
       this.props.addList({ name, c1, c2 });
