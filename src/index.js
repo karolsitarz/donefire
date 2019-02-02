@@ -19,6 +19,12 @@ const store = applyMiddleware(save({
   disableWarnings: true
 }));
 
+window.oncontextmenu = function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  return false;
+};
+
 ReactDOM.render((
   <Provider store={store}>
     <GlobalStyles />

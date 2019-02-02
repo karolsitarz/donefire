@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
+import { connect } from 'react-redux';
+
+import { listInputDataChange } from '../actions';
 
 const Track = styled.div`
   height: 1em;
@@ -58,12 +61,10 @@ const HandleFill = styled.div.attrs(({ $value }) => ({
   `}
 `;
 
-export default class ColorPicker extends Component {
+class ColorPicker extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      value1: 0.5,
-      value2: 0.75,
       scrolling1: false,
       scrolling2: false
     };
@@ -76,18 +77,17 @@ export default class ColorPicker extends Component {
     handle1.addEventListener('touchmove', e => {
       if (!this.state.scrolling1) this.setState({ scrolling1: true });
       let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
-      const low = this.state.value2 - 0.1;
-      const high = this.state.value2 * 1 + 0.1;
+      const low = this.props.data.c2 - 0.1;
+      const high = this.props.data.c2 * 1 + 0.1;
 
       if (low < 0 && calculated <= 0) calculated = high;
       if (high > 1 && calculated >= 1) calculated = low;
-      if (calculated > low && calculated < this.state.value2) calculated = low;
-      if (calculated < high && calculated >= this.state.value2) calculated = high;
+      if (calculated > low && calculated < this.props.data.c2) calculated = low;
+      if (calculated < high && calculated >= this.props.data.c2) calculated = high;
       if (calculated < 0) calculated = 0;
       if (calculated > 1) calculated = 1;
 
-      this.setState({ value1: calculated });
-      this.props.handleValue1(calculated);
+      this.props.listInputDataChange({ c1: calculated });
     });
     handle1.addEventListener('touchend', e => {
       if (this.state.scrolling1) this.setState({ scrolling1: false });
@@ -96,18 +96,17 @@ export default class ColorPicker extends Component {
     handle2.addEventListener('touchmove', e => {
       if (!this.state.scrolling2) this.setState({ scrolling2: true });
       let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
-      const low = this.state.value1 - 0.1;
-      const high = this.state.value1 * 1 + 0.1;
+      const low = this.props.data.c1 - 0.1;
+      const high = this.props.data.c1 * 1 + 0.1;
 
       if (low < 0 && calculated <= 0) calculated = high;
       if (high > 1 && calculated >= 1) calculated = low;
-      if (calculated > low && calculated < this.state.value1) calculated = low;
-      if (calculated < high && calculated >= this.state.value1) calculated = high;
+      if (calculated > low && calculated < this.props.data.c1) calculated = low;
+      if (calculated < high && calculated >= this.props.data.c1) calculated = high;
       if (calculated < 0) calculated = 0;
       if (calculated > 1) calculated = 1;
 
-      this.setState({ value2: calculated });
-      this.props.handleValue2(calculated);
+      this.props.listInputDataChange({ c2: calculated });
     });
     handle2.addEventListener('touchend', e => {
       if (this.state.scrolling2) this.setState({ scrolling2: false });
@@ -118,23 +117,29 @@ export default class ColorPicker extends Component {
       <Track ref={e => (this.box = e)} >
         <Handle
           $type={1}
-          $value={this.state.value1}
+          $value={this.props.data.c1}
           ref={e => (this.handle1 = e)}>
           <HandleFill
             $type={1}
             $scrolling={this.state.scrolling1}
-            $value={this.state.value1} />
+            $value={this.props.data.c1} />
         </Handle>
         <Handle
           $type={2}
-          $value={this.state.value2}
+          $value={this.props.data.c2}
           ref={e => (this.handle2 = e)}>
           <HandleFill
             $type={2}
             $scrolling={this.state.scrolling2}
-            $value={this.state.value2} />
+            $value={this.props.data.c2} />
         </Handle>
       </Track>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  data: state.listInputData
+});
+
+export default connect(mapStateToProps, { listInputDataChange })(ColorPicker);

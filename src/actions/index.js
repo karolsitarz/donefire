@@ -27,3 +27,8 @@ export const currentListChange = ({ id, name, c1, c2 }) => ({
   type: 'CURRENT_LIST_CHANGE',
   payload: { id, name, c1, c2 }
 });
+
+export const listInputDataChange = ({ name, c1, c2 }) => ({
+  type: 'LISTINPUT_DATA',
+  payload: { name, c1, c2 }
+});

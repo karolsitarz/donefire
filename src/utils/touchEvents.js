@@ -1,7 +1,7 @@
 Object.defineProperty(Object.prototype, 'setupTouchEvents', {
   value: function (delay = 500, dist = 200) {
-    const longPressEvent = new window.Event('onlongpress');
-    const tapEvent = new window.Event('ontap');
+    const longPressEvent = new window.Event('touchpress');
+    const tapEvent = new window.Event('touchtap');
     let longPressTimeout;
     let longPressInit = false;
     let longPress = false;
@@ -22,7 +22,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
     });
 
     this.addEventListener('touchstart', e => {
-      e.preventDefault();
+      // e.preventDefault();
       longPressInit = true;
       longPressDelta = {
         x: e.touches[0].clientX,
@@ -38,7 +38,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
     });
 
     this.addEventListener('touchend', e => {
-      e.preventDefault();
+      // e.preventDefault();
       // tap event
       if (!longPress && longPressInit) {
         this.dispatchEvent(tapEvent);

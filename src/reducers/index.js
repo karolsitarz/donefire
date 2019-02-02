@@ -48,7 +48,7 @@ const listReducer = (currentData = {}, action) => {
   return currentData;
 };
 
-const currentList = (currentList = { id: 0, name: 'all tasks' }, action) => {
+const currentListReducer = (currentList = { id: 0, name: 'all tasks' }, action) => {
   if (action.type === 'CURRENT_LIST_CHANGE') {
     if (!action.payload) return currentList;
 
@@ -65,7 +65,7 @@ const currentList = (currentList = { id: 0, name: 'all tasks' }, action) => {
   return currentList;
 };
 
-const UI = (currentUI = '', action) => {
+const UIReducer = (currentUI = '', action) => {
   if (action.type === 'UI_SWITCH') {
     if (!action.payload) return currentUI;
     return currentUI === action.payload ? '' : action.payload;
@@ -73,9 +73,26 @@ const UI = (currentUI = '', action) => {
   return currentUI;
 };
 
+const listInputDataReducer = (currentSettings = {
+  name: '',
+  c1: 0.5,
+  c2: 0.75
+}, action) => {
+  if (action.type === 'LISTINPUT_DATA') {
+    if (!action.payload) return currentSettings;
+    return {
+      name: action.payload.name != null ? action.payload.name : currentSettings.name,
+      c1: action.payload.c1 != null ? action.payload.c1 : currentSettings.c1,
+      c2: action.payload.c2 != null ? action.payload.c2 : currentSettings.c2
+    };
+  }
+  return currentSettings;
+};
+
 export default combineReducers({
   todo: todoReducer,
   list: listReducer,
-  currentList,
-  UI
+  currentList: currentListReducer,
+  UI: UIReducer,
+  listInputData: listInputDataReducer
 });

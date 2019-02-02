@@ -69,27 +69,14 @@ export default class Slider extends Component {
     let { left, width } = this.box.getBoundingClientRect();
     window.addEventListener('resize', e => ({ left, width } = this.box.getBoundingClientRect()));
 
-    let longPressTimeout;
-    let longPressInit = false;
-    let longPress = false;
-    let longPressDelta = { x: 0, y: 0 };
     //
+    handle.setupTouchEvents();
 
     handle.addEventListener('touchmove', e => {
       if (!e || !e.touches || !e.touches[0]) return;
 
-      if (longPressInit && longPressDelta != null) {
-        // if the distance moved is higher than some value
-        if ((Math.pow((longPressDelta.x - e.touches[0].clientX), 2) + Math.pow((longPressDelta.y - e.touches[0].clientY), 2)) > 200) {
-          if (longPressTimeout) clearTimeout(longPressTimeout);
-          if (longPressInit) longPressInit = !longPressInit;
-          if (longPress) longPress = !longPress;
-          if (this.state.precise) this.setState({ precise: false });
-        }
-      }
-
       let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
-      if (longPress) {
+      if (this.state.precise) {
         calculated = calculated >= 0 && calculated <= 1 ? calculated : calculated > 1 ? 1 : 0;
       } else {
         if (calculated < 0.125) calculated = 0;
@@ -103,31 +90,14 @@ export default class Slider extends Component {
       this.props.sendSlider(calculated);
     });
 
-    handle.addEventListener('touchstart', e => {
-      e.preventDefault();
-      longPressInit = true;
-      longPressDelta = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
-      };
-
-      longPressTimeout = setTimeout(e => {
-        longPressInit = false;
-        longPress = true;
-        this.setState({ precise: true });
-      }, 500);
+    handle.addEventListener('touchpress', e => {
+      this.setState({ precise: true });
+    });
+    handle.addEventListener('touchtap', e => {
+      this.props.tapHandle(e);
     });
 
     handle.addEventListener('touchend', e => {
-      e.preventDefault();
-      // tap event
-      if (!longPress && longPressInit) {
-        this.props.tapHandle(e);
-      }
-
-      if (longPressTimeout) clearTimeout(longPressTimeout);
-      if (longPressInit) longPressInit = !longPressInit;
-      if (longPress) longPress = !longPress;
       if (this.state.precise) this.setState({ precise: false });
     });
   }
