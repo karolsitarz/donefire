@@ -94,7 +94,7 @@ const listInputDataReducer = (currentSettings = {
       name: action.payload.name != null ? action.payload.name : currentSettings.name,
       c1: action.payload.c1 != null ? action.payload.c1 : currentSettings.c1,
       c2: action.payload.c2 != null ? action.payload.c2 : currentSettings.c2,
-      listID: action.payload.listID != null ? action.payload.listID : currentSettings.listID
+      listID: action.payload.listID !== undefined ? action.payload.listID : currentSettings.listID
     };
   }
   return currentSettings;
