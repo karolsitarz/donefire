@@ -8,6 +8,7 @@ import './utils/touchEvents';
 import GlobalStyles from './style/global-styles';
 import reducers from './reducers';
 import App from './components/App';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const store = applyMiddleware(save({
   states: ['todo', 'list', 'currentList'],
@@ -28,7 +29,9 @@ window.oncontextmenu = function (e) {
 ReactDOM.render((
   <Provider store={store}>
     <GlobalStyles />
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </Provider>),
 document.getElementById('container'));
 
