@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
-import { switchToUI, deleteList, currentListChange } from '../actions';
+import { switchToUI, deleteList, currentListChange, listInputDataChange } from '../actions';
 import { ArrowDown as ArrowDownIcon, Plus as PlusIcon, Trash as TrashIcon } from '../style/icons';
 
 const StyledTopBar = styled.div`
@@ -120,8 +120,9 @@ class TopBar extends Component {
     };
   }
   componentDidMount () {
-    this.trashButton.setupTouchEvents();
-    this.trashButton.addEventListener('touchpress', e => {
+    const { trashButton, touchbar } = this;
+    trashButton.setupTouchEvents();
+    trashButton.addEventListener('touchpress', e => {
       // if deleting current list, toggle to "no list" view
       if (this.props.currentList === this.props.edit) {
         this.props.currentListChange(this.props.currentList);
@@ -129,8 +130,86 @@ class TopBar extends Component {
       this.props.deleteList(this.props.edit);
       this.props.switchToUI('lists');
     });
-    this.trashButton.addEventListener('touchtap', e => {
+    trashButton.addEventListener('touchtap', e => {
       this.setState({ tooltip: true });
+    });
+
+    const changeToList = (skip = 1) => {
+      const { currentListChange, currentList } = this.props;
+      const lists = Object.keys(this.props.list);
+      const index = lists.findIndex(c => c === currentList);
+
+      // if none
+      if (lists.length === 0) return;
+      // if out of bounds
+      if (index === -1 && skip === 1) {
+        currentListChange(lists[0]);
+        // if currently none and go down
+      } else if (index === -1 && skip === -1) {
+        currentListChange(lists[lists.length - 1]);
+      } else if (index + skip < 0 ||
+          index + skip > lists.length - 1) {
+        currentListChange(currentList);
+        // if currently none and go up
+      } else {
+        currentListChange(lists[index + skip]);
+      }
+    };
+    let touchStart = { x: 0, y: 0 };
+    let touchEnd = { x: 0, y: 0 };
+    touchbar.addEventListener('touchstart', e => {
+      touchStart = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+      touchEnd = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+    }, { passive: true });
+
+    touchbar.addEventListener('touchmove', e => {
+      touchEnd = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+    }, { passive: true });
+
+    touchbar.addEventListener('touchend', e => {
+      // distance
+      if ((touchEnd.x - touchStart.x) ** 2 + (touchEnd.y - touchStart.y) ** 2 > 6000) {
+        const angle = Math.atan2((touchEnd.y - touchStart.y), (touchEnd.x - touchStart.x));
+        console.log(angle);
+
+        // RIGHT
+        if (angle < 0.5 && angle > -0.5) {
+          // console.log('right');
+          changeToList(1);
+        // UP
+        } else if (angle < Math.PI / -2 + 0.5 && angle > Math.PI / -2 - 0.5) {
+          if (this.props.UI === '') {
+            this.props.switchToUI('lists');
+          } else if (this.props.UI === 'lists') {
+            this.props.listInputDataChange({
+              name: '',
+              c1: 0.5,
+              c2: 0.75,
+              listID: null
+            });
+            this.props.switchToUI('listinput');
+          }
+        // DOWN
+        } else if (angle < Math.PI / 2 - 0.5 && angle > Math.PI / 2 + 0.5) {
+          if (this.props.UI === 'lists') {
+            console.log('down');
+            this.props.switchToUI('');
+          }
+        // LEFT
+        } else if ((angle < -Math.PI + 0.5 && angle < Math.PI - 0.5) || (angle > -Math.PI + 0.5 && angle > Math.PI - 0.5)) {
+          // console.log('left');
+          changeToList(-1);
+        }
+      }
     });
   }
   componentWillUnmount () {
@@ -144,7 +223,8 @@ class TopBar extends Component {
     }
 
     return (
-      <StyledTopBar>
+      <StyledTopBar
+        ref={e => (this.touchbar = e)} >
         <ArrowButton
           toggle={this.props.UI}
           onClick={e => {
@@ -181,4 +261,4 @@ const mapStateToProps = state => ({
   list: state.list
 });
 
-export default connect(mapStateToProps, { switchToUI, deleteList, currentListChange })(TopBar);
+export default connect(mapStateToProps, { switchToUI, deleteList, currentListChange, listInputDataChange })(TopBar);
