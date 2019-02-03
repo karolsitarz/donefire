@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { switchToUI, deleteList, currentListChange, listInputDataChange } from '../actions';
 import { ArrowDown as ArrowDownIcon, Plus as PlusIcon, Trash as TrashIcon } from '../style/icons';
+import TrashButton from './TrashButton';
 
 const StyledTopBar = styled.div`
   height: 2em;
@@ -81,58 +82,9 @@ const PlusButton = styled(MiniButton)`
     opacity: 0;
   `}
 `;
-const TrashButton = styled(MiniButton)`
-  right: 0;
-  ${props => (props.toggle !== 'listinput' || props.edit === null) && css`
-    pointer-events: none;
-    opacity: 0;
-  `}
-  &::after {
-    content: "long press to delete";
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(10em,-100%);
-    font-size: 0.6em;
-    text-align: center;
-    white-space: nowrap;
-    background: #e7e7e7;
-    padding: 1em 3em;
-    border-radius: 3em;
-    opacity: 0;
-    pointer-events: none;
-    transition:
-      transform .25s ease,
-      opacity .25s ease;
-    ${props => props.$tooltip && css`
-      opacity: 1;
-      transform: translate(5em,-100%);
-    `}
-  }
-`;
-
 class TopBar extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      tooltip: false
-    };
-  }
   componentDidMount () {
-    const { trashButton, touchbar } = this;
-    trashButton.setupTouchEvents();
-    trashButton.addEventListener('touchpress', e => {
-      // if deleting current list, toggle to "no list" view
-      if (this.props.currentList === this.props.edit) {
-        this.props.currentListChange(this.props.currentList);
-      }
-      this.props.deleteList(this.props.edit);
-      this.props.switchToUI('lists');
-    });
-    trashButton.addEventListener('touchtap', e => {
-      this.setState({ tooltip: true });
-    });
+    const { touchbar } = this;
 
     const changeToList = (skip = 1) => {
       const { currentListChange, currentList } = this.props;
@@ -212,9 +164,6 @@ class TopBar extends Component {
       }
     });
   }
-  componentWillUnmount () {
-    this.trashButton.deleteTouchEvents();
-  }
   render () {
     let title = 'all tasks';
     if (this.props.currentList !== null) title = this.props.list[this.props.currentList].name || '';
@@ -227,10 +176,7 @@ class TopBar extends Component {
         ref={e => (this.touchbar = e)} >
         <ArrowButton
           toggle={this.props.UI}
-          onClick={e => {
-            this.props.switchToUI('lists');
-            this.setState({ tooltip: false });
-          }}>
+          onClick={e => this.props.switchToUI('lists')}>
           <ArrowDownIcon />
         </ArrowButton>
         <ListName>
@@ -242,11 +188,7 @@ class TopBar extends Component {
           onClick={e => this.props.switchToUI('taskinput')}>
           <PlusIcon />
         </PlusButton>
-        <TrashButton
-          $tooltip={this.state.tooltip}
-          ref={e => (this.trashButton = e)}
-          edit={this.props.edit}
-          toggle={this.props.UI} >
+        <TrashButton>
           <TrashIcon />
         </TrashButton>
       </StyledTopBar>

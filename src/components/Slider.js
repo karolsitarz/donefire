@@ -102,9 +102,6 @@ export default class Slider extends Component {
       if (this.state.precise) this.setState({ precise: false });
     });
   }
-  componentWillUnmount () {
-    this.handle.deleteTouchEvents();
-  }
   render () {
     return (
       <Container>
