@@ -38,7 +38,7 @@ const RootStyle = styled.div`
     left: 50%;
     border-radius: 50%;
     transform: translate3d(-50%,0,0);
-    transition: transform .3s ease;
+    transition: transform .25s ease;
     ${props => props.UI === 'lists' && css`
       transform: translate3d(-50%,-4em,0);
     `}

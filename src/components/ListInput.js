@@ -10,8 +10,8 @@ const StyledScroll = styled.section`
   height: 14em;
   flex-shrink: 0;
   transition:
-    opacity .3s ease,
-    height .3s ease;
+    opacity .25s ease,
+    height .25s ease;
   ${props => !props.inputOpen && css`
     height: 0;
     pointer-events: none;

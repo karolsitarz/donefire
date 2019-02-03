@@ -27,7 +27,7 @@ const MiniButton = styled.div`
   height: 2em;
   fill: #666;
   position: absolute;
-  transition: opacity .3s ease;
+  transition: opacity .25s ease;
   > svg {
     pointer-events: none;
   }
@@ -39,8 +39,8 @@ const MiniButton = styled.div`
     height: 100%;
     width: 100%;
     transition:
-      opacity .3s ease,
-      transform .3s ease;
+      opacity .25s ease,
+      transform .25s ease;
     border-radius: 50%;
     background: #0001;
     opacity: 0;
@@ -53,8 +53,8 @@ const ArrowButton = styled(MiniButton)`
   > svg {
     transform: ${props => props.toggle === 'lists' ? 'rotate(-180deg)' : ''};
     transform: ${props => props.toggle === 'listinput' ? 'rotate(-90deg)' : ''};
-    /* transition: transform .3s cubic-bezier(0.33, 0.37, 0.16, 2.35); */
-    transition: transform .3s ease;
+    /* transition: transform .25s cubic-bezier(0.33, 0.37, 0.16, 2.35); */
+    transition: transform .25s ease;
   }
   &::before {
     ${props => (props.toggle === 'lists' || props.toggle === 'listinput') && css`
@@ -68,7 +68,7 @@ const PlusButton = styled(MiniButton)`
   right: 0;
   > svg {
     transform: ${props => props.toggle === 'taskinput' ? 'rotate(45deg)' : ''};
-    transition: transform .3s ease;
+    transition: transform .25s ease;
   }
   &::before {
     ${props => props.toggle === 'taskinput' && css`
@@ -103,8 +103,8 @@ const TrashButton = styled(MiniButton)`
     opacity: 0;
     pointer-events: none;
     transition:
-      transform .3s ease,
-      opacity .3s ease;
+      transform .25s ease,
+      opacity .25s ease;
     ${props => props.$tooltip && css`
       opacity: 1;
       transform: translate(5em,-100%);

@@ -15,8 +15,8 @@ const StyledListTile = styled.div`
   display: flex;
   align-items: flex-end;
   transition: 
-    opacity .3s ease,
-    transform .3s ease;
+    opacity .25s ease,
+    transform .25s ease;
   > span {
     font-size: .75em;
     overflow: hidden;

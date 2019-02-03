@@ -15,8 +15,8 @@ const StyledList = styled.section`
   overflow-x: hidden;
   box-shadow: 0 .5em 1em 0 #0001;
   transition:
-    opacity .3s ease,
-    transform .3s ease;
+    opacity .25s ease,
+    transform .25s ease;
   ${props => props.UI === 'listinput' && css`
     /* transform: translateY(-3em); */
     opacity: 0;

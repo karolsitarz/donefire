@@ -18,7 +18,7 @@ const Handle = styled.div.attrs(({ $value }) => ({
   top: 50%;
   position: absolute;
   transform: translateY(-50%);
-  transition: ${props => props.precise ? 'none' : 'transform .3s ease'};
+  transition: ${props => props.precise ? 'none' : 'transform .25s ease'};
 `;
 
 const HandleFill = styled.div.attrs(({ $value }) => ({

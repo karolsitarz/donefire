@@ -9,8 +9,8 @@ const Container = styled.section`
   height: 6em;
   flex-shrink: 0;
   transition:
-    opacity .3s ease,
-    height .3s ease;
+    opacity .25s ease,
+    height .25s ease;
 
   ${props => !props.listOpen && css`
     height: 0;

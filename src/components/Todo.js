@@ -11,8 +11,9 @@ const StyledTodo = styled.div`
   align-items: center;
   order: ${props => (180 - props.$value).toFixed(0)};
   transition:
-    transform .3s ease,
-    opacity .3s ease;
+    transform .25s ease,
+    opacity .25s ease;
+  transform-origin: .5em 50%;
   opacity: ${props => !props.done ? 1 : 0.5};
   padding: 1em 0;
   flex-shrink: 0;
@@ -30,7 +31,7 @@ const Checkbox = styled.div`
   width: 1em;
   margin-right: 1em;
   border-radius: .25em;
-  transition: transform .3s ease;
+  transition: transform .25s ease;
   background-image:
     linear-gradient(to right bottom,
       hsl(${props => 171 + 1 * props.$value}, 81%, 64%) 0%,
@@ -46,7 +47,7 @@ const Checkbox = styled.div`
     top: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
-    transition: transform .3s ease;
+    transition: transform .25s ease;
     transform: ${props => !props.done ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)'};
   }
 
@@ -59,7 +60,7 @@ const Checkbox = styled.div`
     top: 50%;
     pointer-events: none;
     transform: ${props => !props.done ? 'translate(-50%, -50%) scale(0)' : 'translate(-50%, -50%) scale(1)'};
-    transition: transform .3s ease;
+    transition: transform .25s ease;
   }
 `;
 
