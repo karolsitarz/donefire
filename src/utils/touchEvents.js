@@ -22,7 +22,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
           if (longPress) longPress = !longPress;
         }
       }
-    }, { passive: true });
+    }, { passive: scrolling });
 
     this.addEventListener('touchstart', e => {
       // e.preventDefault();
@@ -38,7 +38,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
 
         this.dispatchEvent(longPressEvent);
       }, delay);
-    }, { passive: true });
+    }, { passive: scrolling });
 
     this.addEventListener('touchend', e => {
       if (!scrolling) e.preventDefault();

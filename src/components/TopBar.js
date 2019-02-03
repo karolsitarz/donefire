@@ -130,7 +130,7 @@ class TopBar extends Component {
       this.props.switchToUI('lists');
     });
     this.trashButton.addEventListener('touchtap', e => {
-      if (!this.state.tooltip) this.setState({ tooltip: true });
+      this.setState({ tooltip: true });
     });
   }
   render () {
@@ -144,7 +144,10 @@ class TopBar extends Component {
       <StyledTopBar>
         <ArrowButton
           toggle={this.props.UI}
-          onClick={e => this.props.switchToUI('lists')}>
+          onClick={e => {
+            this.props.switchToUI('lists');
+            this.setState({ tooltip: false });
+          }}>
           <ArrowDownIcon />
         </ArrowButton>
         <ListName>
