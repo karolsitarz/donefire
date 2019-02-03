@@ -29,7 +29,7 @@ const Checkbox = styled.div.attrs(({ $x, $y }) => ({
   linear-gradient(to right bottom,
     hsl(${props => 171 + 1 * props.$value}, 81%, 64%) 0%,
     hsl(${props => -146 + 1 * props.$value}, 100%, 72%) 100%);
-
+  filter: ${props => props.$delete ? 'grayscale(1)' : ''};
   &::before {
     content: "";
     height: .75em;
@@ -79,7 +79,7 @@ class Todo extends Component {
     this.state = {
       x: 0,
       y: 0,
-      isMoving: false
+      delete: false
     };
   }
   componentDidMount () {
@@ -87,7 +87,7 @@ class Todo extends Component {
     let deleteInit = false;
     let deleteMove = false;
 
-    checkbox.setupTouchEvents();
+    checkbox.setupTouchEvents({ delay: 300 });
     checkbox.addEventListener('touchtap', e => {
       this.props.toggleTodo(this.props.id);
     });
@@ -113,16 +113,22 @@ class Todo extends Component {
         const x = end.clientX - start.clientX;
         const y = end.clientY - start.clientY;
         this.setState({ x, y });
+        if (dist() > 100 ** 2) {
+          this.setState({ delete: true });
+        } else {
+          this.setState({ delete: false });
+        }
       }
     });
     checkbox.addEventListener('touchend', e => {
-      deleteInit = false;
-      deleteMove = false;
-      this.setState({ x: 0, y: 0 });
+      this.setState({ x: 0, y: 0, delete: false });
 
-      if (dist() > 200 ** 2) {
+      if (deleteMove && dist() > 100 ** 2) {
         this.props.deleteTodo(this.props.id);
       }
+
+      deleteInit = false;
+      deleteMove = false;
     });
   }
   componentWillUnmount () {
@@ -138,7 +144,7 @@ class Todo extends Component {
           <Checkbox
             $x={this.state.x}
             $y={this.state.y}
-            $isMoving={this.state.isMoving}
+            $delete={this.state.delete}
             done={this.props.done}
             $value={this.props.value}>
             <CheckIcon />
