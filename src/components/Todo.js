@@ -16,7 +16,11 @@ const StyledTodo = styled.div`
   flex-shrink: 0;
 `;
 
-const Checkbox = styled.div`
+const Checkbox = styled.div.attrs(({ $x, $y }) => ({
+  style: {
+    transform: `translate(${$x}px, ${$y}px)`
+  }
+}))`
   height: 1em;
   width: 1em;
   margin-right: 1em;
@@ -70,15 +74,53 @@ const TodoSpan = styled.span`
 `;
 
 class Todo extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      x: 0,
+      y: 0,
+      isMoving: false
+    };
+  }
   componentDidMount () {
     const { checkbox } = this;
+    let deleteInit = false;
+    let deleteMove = false;
 
     checkbox.setupTouchEvents();
     checkbox.addEventListener('touchtap', e => {
       this.props.toggleTodo(this.props.id);
     });
     checkbox.addEventListener('touchpress', e => {
-      if (window.confirm('delete?')) {
+      // if (window.confirm('delete?')) {
+      //   this.props.deleteTodo(this.props.id);
+      // }
+      deleteInit = true;
+    });
+
+    let start;
+    let end;
+    const dist = () => (end.clientX - start.clientX) ** 2 + (end.clientY - start.clientY) ** 2;
+
+    checkbox.addEventListener('touchmove', e => {
+      end = e.touches[0];
+      if (deleteInit) {
+        deleteInit = false;
+        deleteMove = true;
+        start = end;
+      }
+      if (deleteMove) {
+        const x = end.clientX - start.clientX;
+        const y = end.clientY - start.clientY;
+        this.setState({ x, y });
+      }
+    });
+    checkbox.addEventListener('touchend', e => {
+      deleteInit = false;
+      deleteMove = false;
+      this.setState({ x: 0, y: 0 });
+
+      if (dist() > 200 ** 2) {
         this.props.deleteTodo(this.props.id);
       }
     });
@@ -94,6 +136,9 @@ class Todo extends Component {
         <CheckboxHitbox
           ref={e => (this.checkbox = e)} >
           <Checkbox
+            $x={this.state.x}
+            $y={this.state.y}
+            $isMoving={this.state.isMoving}
             done={this.props.done}
             $value={this.props.value}>
             <CheckIcon />
