@@ -90,15 +90,15 @@ class Todo extends Component {
     };
   }
   componentDidMount () {
-    const { checkbox } = this;
+    const { todo } = this;
     let deleteInit = false;
     let deleteMove = false;
 
-    checkbox.setupTouchEvents({ delay: 300, scrolling: true });
-    checkbox.addEventListener('touchtap', e => {
+    todo.setupTouchEvents({ delay: 300, scrolling: true });
+    todo.addEventListener('touchtap', e => {
       this.props.toggleTodo(this.props.id);
     });
-    checkbox.addEventListener('touchpress', e => {
+    todo.addEventListener('touchpress', e => {
       // if (window.confirm('delete?')) {
       //   this.props.deleteTodo(this.props.id);
       // }
@@ -109,7 +109,7 @@ class Todo extends Component {
     let start;
     let end;
 
-    checkbox.addEventListener('touchmove', e => {
+    todo.addEventListener('touchmove', e => {
       end = e.touches[0];
       if (deleteInit) {
         deleteInit = false;
@@ -125,7 +125,7 @@ class Todo extends Component {
         }
       }
     }, { passive: true });
-    checkbox.addEventListener('touchend', e => {
+    todo.addEventListener('touchend', e => {
       this.setState({ x: 0, delete: false, moving: false });
 
       if (deleteMove && end.clientX - start.clientX > 50) {
@@ -137,17 +137,17 @@ class Todo extends Component {
     });
   }
   componentWillUnmount () {
-    this.checkbox.deleteTouchEvents();
+    this.todo.deleteTouchEvents();
   }
   render () {
     return (
       <StyledTodo
+        ref={e => (this.todo = e)}
         $moving={this.state.moving}
         $delete={this.state.delete}
         done={this.props.done}
         $value={this.props.value} >
-        <CheckboxHitbox
-          ref={e => (this.checkbox = e)} >
+        <CheckboxHitbox>
           <Checkbox
             done={this.props.done}
             $value={this.props.value}>
