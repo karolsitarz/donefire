@@ -1,7 +1,10 @@
 Object.defineProperty(Object.prototype, 'setupTouchEvents', {
-  value: function (delay = 500, dist = 200) {
+  value: function (options = {}) {
     const longPressEvent = new window.Event('touchpress');
     const tapEvent = new window.Event('touchtap');
+    const scrolling = options.scrolling || false;
+    const delay = options.delay || 500;
+    const dist = options.dist || 300;
     let longPressTimeout;
     let longPressInit = false;
     let longPress = false;
@@ -38,7 +41,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
     }, { passive: true });
 
     this.addEventListener('touchend', e => {
-      // e.preventDefault();
+      if (!scrolling) e.preventDefault();
       // tap event
       if (!longPress && longPressInit) {
         this.dispatchEvent(tapEvent);
@@ -47,7 +50,7 @@ Object.defineProperty(Object.prototype, 'setupTouchEvents', {
       if (longPressTimeout) clearTimeout(longPressTimeout);
       if (longPressInit) longPressInit = !longPressInit;
       if (longPress) longPress = !longPress;
-    }, { passive: true });
+    }, { passive: scrolling });
   }
 });
 

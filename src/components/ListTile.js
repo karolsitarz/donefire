@@ -38,7 +38,7 @@ class ListTile extends Component {
   componentDidMount () {
     const { tileRef } = this;
 
-    tileRef.setupTouchEvents();
+    tileRef.setupTouchEvents({ scrolling: true });
 
     tileRef.addEventListener('touchpress', e => {
       this.props.listInputDataChange({
