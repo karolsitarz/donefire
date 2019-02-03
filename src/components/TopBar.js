@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
@@ -28,6 +28,9 @@ const MiniButton = styled.div`
   fill: #666;
   position: absolute;
   transition: opacity .3s ease;
+  > svg {
+    pointer-events: none;
+  }
   &::before {
     content: "";
     position: absolute;
@@ -84,48 +87,86 @@ const TrashButton = styled(MiniButton)`
     pointer-events: none;
     opacity: 0;
   `}
+  &::after {
+    content: "long press to delete";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(10em,-100%);
+    font-size: 0.6em;
+    text-align: center;
+    white-space: nowrap;
+    background: #e7e7e7;
+    padding: 1em 3em;
+    border-radius: 3em;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform .3s ease,
+      opacity .3s ease;
+    ${props => props.$tooltip && css`
+      opacity: 1;
+      transform: translate(5em,-100%);
+    `}
+  }
 `;
 
-const TopBar = props => {
-  let title = 'all tasks';
-  if (props.currentList !== null) title = props.list[props.currentList].name || '';
-  if (props.UI === 'listinput') {
-    title = !props.edit ? 'a new list' : 'edit list';
+class TopBar extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      tooltip: false
+    };
   }
+  componentDidMount () {
+    this.trashButton.setupTouchEvents();
+    this.trashButton.addEventListener('touchpress', e => {
+      // if deleting current list, toggle to "no list" view
+      if (this.props.currentList === this.props.edit) {
+        this.props.currentListChange(this.props.currentList);
+      }
+      this.props.deleteList(this.props.edit);
+      this.props.switchToUI('lists');
+    });
+    this.trashButton.addEventListener('touchtap', e => {
+      if (!this.state.tooltip) this.setState({ tooltip: true });
+    });
+  }
+  render () {
+    let title = 'all tasks';
+    if (this.props.currentList !== null) title = this.props.list[this.props.currentList].name || '';
+    if (this.props.UI === 'listinput') {
+      title = !this.props.edit ? 'a new list' : 'edit list';
+    }
 
-  return (
-    <StyledTopBar>
-      <ArrowButton
-        toggle={props.UI}
-        onClick={e => props.switchToUI('lists')}>
-        <ArrowDownIcon />
-      </ArrowButton>
-      <ListName>
-        {title}
-      </ListName>
-      <PlusButton
-        currentList={props.currentList}
-        toggle={props.UI}
-        onClick={e => props.switchToUI('taskinput')}>
-        <PlusIcon />
-      </PlusButton>
-      <TrashButton
-        edit={props.edit}
-        toggle={props.UI}
-        onClick={e => {
-          if (window.confirm('delete?')) {
-            if (props.currentList === props.edit) {
-              props.currentListChange(props.currentList);
-            }
-            props.deleteList(props.edit);
-            props.switchToUI('lists');
-          }
-        }}>
-        <TrashIcon />
-      </TrashButton>
-    </StyledTopBar>
-  );
-};
+    return (
+      <StyledTopBar>
+        <ArrowButton
+          toggle={this.props.UI}
+          onClick={e => this.props.switchToUI('lists')}>
+          <ArrowDownIcon />
+        </ArrowButton>
+        <ListName>
+          {title}
+        </ListName>
+        <PlusButton
+          currentList={this.props.currentList}
+          toggle={this.props.UI}
+          onClick={e => this.props.switchToUI('taskinput')}>
+          <PlusIcon />
+        </PlusButton>
+        <TrashButton
+          $tooltip={this.state.tooltip}
+          ref={e => (this.trashButton = e)}
+          edit={this.props.edit}
+          toggle={this.props.UI} >
+          <TrashIcon />
+        </TrashButton>
+      </StyledTopBar>
+    );
+  }
+}
 
 const mapStateToProps = state => ({
   currentList: state.currentList,
