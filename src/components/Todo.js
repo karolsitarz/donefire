@@ -11,8 +11,10 @@ const StyledTodo = styled.div`
   align-items: center;
   order: ${props => (180 - props.$value).toFixed(0)};
   transition:
+    filter .25s ease,
     transform .25s ease,
     opacity .25s ease;
+  will-change: transform;
   transform-origin: .5em 50%;
   opacity: ${props => !props.done ? 1 : 0.5};
   padding: 1em 0;
@@ -20,10 +22,10 @@ const StyledTodo = styled.div`
   opacity: ${props => props.$delete ? 0.2 : ''};
   filter: ${props => props.$moving ? 'grayscale(1)' : ''};
   transform: ${({ $moving, $delete }) => $moving && $delete
-    ? 'scale(0.9) translateX(50px)'
+    ? 'scale(0.9) translateZ(0) translateX(50px)'
     : $moving
-      ? 'scale(0.9)'
-      : $delete ? 'translateX(50px)' : ''};
+      ? 'scale(0.9) translateZ(0)'
+      : $delete ? 'translateX(50px) translateZ(0)' : 'translateZ(0)'};
 `;
 
 const Checkbox = styled.div`
@@ -31,7 +33,6 @@ const Checkbox = styled.div`
   width: 1em;
   margin-right: 1em;
   border-radius: .25em;
-  transition: transform .25s ease;
   background-image:
     linear-gradient(to right bottom,
       hsl(${props => 171 + 1 * props.$value}, 81%, 64%) 0%,
@@ -48,7 +49,8 @@ const Checkbox = styled.div`
     transform: translate(-50%, -50%);
     pointer-events: none;
     transition: transform .25s ease;
-    transform: ${props => !props.done ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)'};
+    will-change: transform;
+    transform: ${props => !props.done ? 'translate3d(-50%, -50%,0) scale(1)' : 'translate3d(-50%, -50%,0) scale(0)'};
   }
 
   > svg {
@@ -59,7 +61,7 @@ const Checkbox = styled.div`
     left: 50%
     top: 50%;
     pointer-events: none;
-    transform: ${props => !props.done ? 'translate(-50%, -50%) scale(0)' : 'translate(-50%, -50%) scale(1)'};
+    transform: ${props => !props.done ? 'translate3d(-50%, -50%,0) scale(0)' : 'translate3d(-50%, -50%,0) scale(1)'};
     transition: transform .25s ease;
   }
 `;

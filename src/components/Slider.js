@@ -17,7 +17,8 @@ const Handle = styled.div.attrs(({ $value }) => ({
   border-radius: 50%;
   top: 50%;
   position: absolute;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateZ(0);
+  will-change: transform;
   transition: ${props => props.precise ? 'none' : 'transform .25s ease'};
 `;
 
@@ -35,8 +36,9 @@ const HandleFill = styled.div.attrs(({ $value }) => ({
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  transform: ${props => props.precise ? 'scale(1.2)' : 'scale(1)'};
+  transform: ${props => props.precise ? 'scale(1.2) translateZ(0)' : 'scale(1) translateZ(0)'};
   transition: ${props => props.precise ? 'transform .25s cubic-bezier(0.33, 0.37, 0.16, 2.35)' : 'transform .2s ease'};
+  will-change: transform;
   > svg {
     width: 50%;
     left: 50%;

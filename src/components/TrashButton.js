@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
+import { deleteList, currentListChange, switchToUI } from '../actions';
+
 const MiniButton = styled.div`
   width: 2em;
   height: 2em;
@@ -21,10 +23,11 @@ const MiniButton = styled.div`
     transition:
       opacity .25s ease,
       transform .25s ease;
+    will-change: transform;
     border-radius: 50%;
     background: #0001;
     opacity: 0;
-    transform: scale(0.25);
+    transform: scale(0.25) translateZ(0);
   }
 `;
 
@@ -49,12 +52,13 @@ ${props => (props.toggle !== 'listinput' || props.edit === null) && css`
   border-radius: 3em;
   opacity: 0;
   pointer-events: none;
+  will-change: transform;
   transition:
     transform .25s ease,
     opacity .25s ease;
   ${props => props.$tooltip && css`
     opacity: 1;
-    transform: translate(5em,-100%);
+    transform: translate3d(5em,-100%,0);
   `}
 }
 `;
@@ -100,8 +104,9 @@ class TrashButton extends Component {
 }
 
 const mapStateToProps = state => ({
+  currentList: state.currentList,
   UI: state.UI,
   edit: state.listInputData.listID
 });
 
-export default connect(mapStateToProps, { })(TrashButton);
+export default connect(mapStateToProps, { deleteList, currentListChange, switchToUI })(TrashButton);

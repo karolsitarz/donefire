@@ -14,11 +14,12 @@ const StyledList = styled.section`
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 0 .5em 1em 0 #0001;
+  will-change: transform;
   transition:
     opacity .25s ease,
     transform .25s ease;
   ${props => props.UI === 'listinput' && css`
-    transform: translateY(-5em);
+    transform: translateY(-5em) translateZ(0);
     opacity: 0;
     pointer-events: none;
   `}

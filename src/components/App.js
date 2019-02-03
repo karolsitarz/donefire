@@ -39,6 +39,7 @@ const RootStyle = styled.div`
     border-radius: 50%;
     transform: translate3d(-50%,0,0);
     transition: transform .25s ease;
+    will-change: transform;
     ${props => props.UI === 'lists' && css`
       transform: translate3d(-50%,-4em,0);
     `}
@@ -67,9 +68,9 @@ class App extends Component {
         UI={this.props.UI}>
         <List UI={this.props.UI} />
         <TopBar />
+        <ListList />
         <BottomForm />
         <ListInput />
-        <ListList />
       </RootStyle>
     );
   }

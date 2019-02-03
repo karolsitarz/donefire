@@ -42,25 +42,27 @@ const MiniButton = styled.div`
     transition:
       opacity .25s ease,
       transform .25s ease;
+    will-change: transform;
     border-radius: 50%;
     background: #0001;
     opacity: 0;
-    transform: scale(0.25);
+    transform: scale(0.25) translateZ(0);
   }
 `;
 
 const ArrowButton = styled(MiniButton)`
   left: 0;
   > svg {
-    transform: ${props => props.toggle === 'lists' ? 'rotate(-180deg)' : ''};
-    transform: ${props => props.toggle === 'listinput' ? 'rotate(-90deg)' : ''};
+    transform: ${props => props.toggle === 'lists' ? 'rotate(-180deg) translateZ(0)' : 'translateZ(0)'};
+    transform: ${props => props.toggle === 'listinput' ? 'rotate(-90deg) translateZ(0)' : 'translateZ(0)'};
     /* transition: transform .25s cubic-bezier(0.33, 0.37, 0.16, 2.35); */
     transition: transform .25s ease;
+    will-change: transform;
   }
   &::before {
     ${props => (props.toggle === 'lists' || props.toggle === 'listinput') && css`
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translateZ(0);
     `}
   }
 `;
@@ -68,13 +70,13 @@ const ArrowButton = styled(MiniButton)`
 const PlusButton = styled(MiniButton)`
   right: 0;
   > svg {
-    transform: ${props => props.toggle === 'taskinput' ? 'rotate(45deg)' : ''};
+    transform: ${props => props.toggle === 'taskinput' ? 'rotate(45deg) translateZ(0);' : 'translateZ(0);'};
     transition: transform .25s ease;
   }
   &::before {
     ${props => props.toggle === 'taskinput' && css`
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translateZ(0);;
     `}
   }
   ${props => props.toggle === 'listinput' && css`
@@ -134,8 +136,9 @@ class TopBar extends Component {
 
         // RIGHT
         if (angle < 0.5 && angle > -0.5) {
-          // console.log('right');
-          changeToList(1);
+          if (this.props.UI !== 'listinput') {
+            changeToList(1);
+          }
         // UP
         } else if (angle < Math.PI / -2 + 0.5 && angle > Math.PI / -2 - 0.5) {
           if (this.props.UI === '') {
@@ -155,11 +158,14 @@ class TopBar extends Component {
             this.props.switchToUI('lists');
           } else if (this.props.UI === 'listinput') {
             this.props.switchToUI('lists');
+          } else if (this.props.UI === 'taskinput') {
+            this.props.switchToUI('taskinput');
           }
         // LEFT
         } else if ((angle < -Math.PI + 0.5 && angle < Math.PI - 0.5) || (angle > -Math.PI + 0.5 && angle > Math.PI - 0.5)) {
-          // console.log('left');
-          changeToList(-1);
+          if (this.props.UI !== 'listinput') {
+            changeToList(-1);
+          }
         }
       }
     });

@@ -51,6 +51,7 @@ const HandleFill = styled.div.attrs(({ $value }) => ({
   height: 100%;
   box-shadow: 0 0 0 0.25em #f7f7f7, 0 0 1em #00000088;
   transition: transform .2s ease;
+    will-change: transform;
   ${props => props.$type === 1 && css`
     border-radius: 0 2em 2em 2em;
     transform: ${props => props.$scrolling ? 'rotate(-135deg) translateY(25%) translateX(25%)' : 'scale(0.9)'};

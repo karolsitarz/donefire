@@ -14,6 +14,7 @@ const StyledListTile = styled.div`
   padding: 1em;
   display: flex;
   align-items: flex-end;
+  will-change: transform;
   transition: 
     opacity .25s ease,
     transform .25s ease;
@@ -29,7 +30,7 @@ const StyledListTile = styled.div`
       hsl(${props => 351 + props.$c2 * 360},81%,64%) 100%);
   color: ${props => props.$light ? '#fff' : ''};
   ${props => props.$selected && css`
-    transform: scale(0.9);
+    transform: scale(0.9) translateZ(0);
     opacity: 0.5;
   `}
 `;
