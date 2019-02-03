@@ -53,8 +53,8 @@ const MiniButton = styled.div`
 const ArrowButton = styled(MiniButton)`
   left: 0;
   > svg {
-    transform: ${props => props.toggle === 'lists' ? 'rotate(-180deg) translateZ(0)' : 'translateZ(0)'};
-    transform: ${props => props.toggle === 'listinput' ? 'rotate(-90deg) translateZ(0)' : 'translateZ(0)'};
+    transform: ${props => props.toggle === 'lists' ? 'rotate(-180deg) translateZ(0)' : ''};
+    transform: ${props => props.toggle === 'listinput' ? 'rotate(-90deg) translateZ(0)' : ''};
     /* transition: transform .25s cubic-bezier(0.33, 0.37, 0.16, 2.35); */
     transition: transform .25s ease;
     will-change: transform;
@@ -76,7 +76,7 @@ const PlusButton = styled(MiniButton)`
   &::before {
     ${props => props.toggle === 'taskinput' && css`
       opacity: 1;
-      transform: scale(1) translateZ(0);;
+      transform: scale(1) translateZ(0);
     `}
   }
   ${props => props.toggle === 'listinput' && css`
