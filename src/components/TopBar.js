@@ -179,7 +179,6 @@ class TopBar extends Component {
       // distance
       if ((touchEnd.x - touchStart.x) ** 2 + (touchEnd.y - touchStart.y) ** 2 > 6000) {
         const angle = Math.atan2((touchEnd.y - touchStart.y), (touchEnd.x - touchStart.x));
-        console.log(angle);
 
         // RIGHT
         if (angle < 0.5 && angle > -0.5) {
@@ -199,10 +198,11 @@ class TopBar extends Component {
             this.props.switchToUI('listinput');
           }
         // DOWN
-        } else if (angle < Math.PI / 2 - 0.5 && angle > Math.PI / 2 + 0.5) {
+        } else if (angle < Math.PI / 2 + 0.5 && angle > Math.PI / 2 - 0.5) {
           if (this.props.UI === 'lists') {
-            console.log('down');
-            this.props.switchToUI('');
+            this.props.switchToUI('lists');
+          } else if (this.props.UI === 'listinput') {
+            this.props.switchToUI('lists');
           }
         // LEFT
         } else if ((angle < -Math.PI + 0.5 && angle < Math.PI - 0.5) || (angle > -Math.PI + 0.5 && angle > Math.PI - 0.5)) {
