@@ -93,4 +93,7 @@ export default createGlobalStyle`
     text-align: center;
     opacity: 0.25;
   }
+  span {
+    pointer-events: none;
+  }
 `;
