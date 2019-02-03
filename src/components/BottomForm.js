@@ -63,8 +63,8 @@ class BottomForm extends Component {
     if (!e || !e.target || e.target.value == null) return;
     const text = e.target.value;
 
-    if (text.length > 50) {
-      this.setState({ text: text.substring(0, 50) });
+    if (text.length > 200) {
+      this.setState({ text: text.substring(0, 200) });
       return;
     }
 

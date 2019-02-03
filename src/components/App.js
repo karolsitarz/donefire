@@ -40,13 +40,13 @@ const RootStyle = styled.div`
     transform: translate3d(-50%,0,0);
     transition: transform .3s ease;
     ${props => props.UI === 'lists' && css`
-      transform: translate3d(-50%,-1em,0);
+      transform: translate3d(-50%,-4em,0);
     `}
     ${props => props.UI === 'taskinput' && css`
-      transform: translate3d(-50%,-2em,0);
+      transform: translate3d(-50%,-5em,0);
     `}
     ${props => props.UI === 'listinput' && css`
-      transform: translate3d(-50%,-5em,0);
+      transform: translate3d(-50%,-8em,0);
     `}
   }
 `;

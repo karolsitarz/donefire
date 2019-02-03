@@ -12,6 +12,8 @@ const StyledTodo = styled.div`
   order: ${props => (180 - props.$value).toFixed(0)};
   transition: opacity .3s ease;
   opacity: ${props => !props.done ? 1 : 0.5};
+  padding: 1em 0;
+  flex-shrink: 0;
 `;
 
 const Checkbox = styled.div`
