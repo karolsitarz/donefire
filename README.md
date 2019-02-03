@@ -10,6 +10,9 @@ I always think that the best way to learn in webdev is by doing projects you're 
   * [styled-components](https://github.com/styled-components/styled-components)
   * [randomatic](https://github.com/jonschlinkert/randomatic) (for generating unique IDs)
   
+## try it out!
+[https://karolsitarz.github.io/donefire/](https://karolsitarz.github.io/donefire/)
+  
 ## screenshots
 ![main view](https://i.imgur.com/qav6Ch2.png)
 ![add task](https://i.imgur.com/OZDLIgY.png)
