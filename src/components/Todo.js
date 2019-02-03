@@ -90,7 +90,7 @@ class Todo extends Component {
     let deleteInit = false;
     let deleteMove = false;
 
-    checkbox.setupTouchEvents({ delay: 300 });
+    checkbox.setupTouchEvents({ delay: 300, scrolling: true });
     checkbox.addEventListener('touchtap', e => {
       this.props.toggleTodo(this.props.id);
     });
@@ -120,7 +120,7 @@ class Todo extends Component {
           this.setState({ delete: false });
         }
       }
-    });
+    }, { passive: true });
     checkbox.addEventListener('touchend', e => {
       this.setState({ x: 0, delete: false, moving: false });
 

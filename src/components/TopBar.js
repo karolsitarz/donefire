@@ -133,6 +133,9 @@ class TopBar extends Component {
       this.setState({ tooltip: true });
     });
   }
+  componentWillUnmount () {
+    this.trashButton.deleteTouchEvents();
+  }
   render () {
     let title = 'all tasks';
     if (this.props.currentList !== null) title = this.props.list[this.props.currentList].name || '';
