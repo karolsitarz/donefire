@@ -12,6 +12,7 @@ I always think that the best way to learn in webdev is by doing projects you're 
   
 ## try it out!
 [https://karolsitarz.github.io/donefire/](https://karolsitarz.github.io/donefire/)
+(works only with touch-enabled devices)
   
 ## screenshots
 ![main view](https://i.imgur.com/qav6Ch2.png)
