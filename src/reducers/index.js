@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import randomize from 'randomatic';
 
 const getID = () => new Date() * 1 + '' + randomize('Aa0', 8);
@@ -76,14 +75,16 @@ const listReducer = (currentData = {}, action) => {
   return currentData;
 };
 
-const currentListReducer = (currentList = null, action) => {
+const currentListReducer = (currentList = null, action, root) => {
+  // check for errors
+  const cfe = c => (c in root.list) ? c : null;
   if (action.type === 'CURRENT_LIST_CHANGE') {
-    if (!action.payload) return currentList;
+    if (!action.payload) return cfe(currentList);
 
     if (currentList === action.payload) return null;
-    return action.payload;
+    return cfe(action.payload);
   }
-  return currentList;
+  return cfe(currentList);
 };
 
 const UIReducer = (currentUI = '', action) => {
@@ -112,10 +113,19 @@ const listInputDataReducer = (currentSettings = {
   return currentSettings;
 };
 
-export default combineReducers({
-  todo: todoReducer,
-  list: listReducer,
-  currentList: currentListReducer,
-  UI: UIReducer,
-  listInputData: listInputDataReducer
-});
+// export default combineReducers({
+//   todo: todoReducer,
+//   list: listReducer,
+//   currentList: currentListReducer,
+//   UI: UIReducer,
+//   listInputData: listInputDataReducer
+// });
+export default (state = {}, action) => {
+  return {
+    todo: todoReducer(state.todo, action, state),
+    list: listReducer(state.list, action, state),
+    currentList: currentListReducer(state.currentList, action, state),
+    UI: UIReducer(state.UI, action, state),
+    listInputData: listInputDataReducer(state.listInputData, action, state)
+  };
+};
