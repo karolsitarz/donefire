@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import { toggleTodo, deleteTodo } from '../actions';
 import { Check as CheckIcon } from '../style/icons';
 
-const StyledTodo = styled.div`
+const StyledTodo = styled.div.attrs(({ $x }) => ({
+  style: {
+    transform: `translateX(${$x > 0 ? $x : 0}px)`
+  }
+}))`
   display: flex;
   min-height: 4em;
   box-shadow: inset 0 -1px #00000008;
@@ -14,22 +18,21 @@ const StyledTodo = styled.div`
   opacity: ${props => !props.done ? 1 : 0.5};
   padding: 1em 0;
   flex-shrink: 0;
+  opacity: ${props => props.$delete ? 0.2 : ''};
 `;
 
-const Checkbox = styled.div.attrs(({ $x, $y }) => ({
-  style: {
-    transform: `translate(${$x}px, ${$y}px)`
-  }
-}))`
+const Checkbox = styled.div`
   height: 1em;
   width: 1em;
   margin-right: 1em;
   border-radius: .25em;
+  transition: transform .3s ease;
+  transform: ${props => props.$moving ? 'scale(1.2)' : ''};
+  filter: ${props => props.$moving ? 'grayscale(1)' : ''};
   background-image:
-  linear-gradient(to right bottom,
-    hsl(${props => 171 + 1 * props.$value}, 81%, 64%) 0%,
-    hsl(${props => -146 + 1 * props.$value}, 100%, 72%) 100%);
-  filter: ${props => props.$delete ? 'grayscale(1)' : ''};
+    linear-gradient(to right bottom,
+      hsl(${props => 171 + 1 * props.$value}, 81%, 64%) 0%,
+      hsl(${props => -146 + 1 * props.$value}, 100%, 72%) 100%);
   &::before {
     content: "";
     height: .75em;
@@ -78,8 +81,8 @@ class Todo extends Component {
     super(props);
     this.state = {
       x: 0,
-      y: 0,
-      delete: false
+      delete: false,
+      moving: false
     };
   }
   componentDidMount () {
@@ -96,11 +99,11 @@ class Todo extends Component {
       //   this.props.deleteTodo(this.props.id);
       // }
       deleteInit = true;
+      this.setState({ moving: true });
     });
 
     let start;
     let end;
-    const dist = () => (end.clientX - start.clientX) ** 2 + (end.clientY - start.clientY) ** 2;
 
     checkbox.addEventListener('touchmove', e => {
       end = e.touches[0];
@@ -110,10 +113,8 @@ class Todo extends Component {
         start = end;
       }
       if (deleteMove) {
-        const x = end.clientX - start.clientX;
-        const y = end.clientY - start.clientY;
-        this.setState({ x, y });
-        if (dist() > 100 ** 2) {
+        this.setState({ x: end.clientX - start.clientX });
+        if (end.clientX - start.clientX > 80) {
           this.setState({ delete: true });
         } else {
           this.setState({ delete: false });
@@ -121,9 +122,9 @@ class Todo extends Component {
       }
     });
     checkbox.addEventListener('touchend', e => {
-      this.setState({ x: 0, y: 0, delete: false });
+      this.setState({ x: 0, delete: false, moving: false });
 
-      if (deleteMove && dist() > 100 ** 2) {
+      if (deleteMove && end.clientX - start.clientX > 80) {
         this.props.deleteTodo(this.props.id);
       }
 
@@ -137,14 +138,14 @@ class Todo extends Component {
   render () {
     return (
       <StyledTodo
+        $x={this.state.x}
+        $delete={this.state.delete}
         done={this.props.done}
         $value={this.props.value} >
         <CheckboxHitbox
           ref={e => (this.checkbox = e)} >
           <Checkbox
-            $x={this.state.x}
-            $y={this.state.y}
-            $delete={this.state.delete}
+            $moving={this.state.moving}
             done={this.props.done}
             $value={this.props.value}>
             <CheckIcon />

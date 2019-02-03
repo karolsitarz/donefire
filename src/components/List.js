@@ -12,6 +12,7 @@ const StyledList = styled.section`
   border-radius: 1.5em;
   padding: 2em;
   overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 .5em 1em 0 #0001;
   transition:
     opacity .3s ease,
