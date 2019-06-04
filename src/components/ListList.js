@@ -8,7 +8,9 @@ import ListTile from './ListTile';
 const Container = styled.section`
   height: 6em;
   flex-shrink: 0;
-  width: 100%;
+  width: 100vw;
+  max-width: 600px;
+  overflow: hidden;
   transition:
     opacity .25s ease,
     height .25s ease;
@@ -23,8 +25,8 @@ const Container = styled.section`
 const Scrolling = styled.div`
   display: flex;
   overflow-x: auto;
-  left: -2em;
   width: 100vw;
+  max-width: 600px;
   top: 2em;
   &::after,
   &::before {
