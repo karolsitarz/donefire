@@ -12,9 +12,9 @@ import themeColor from '../utils/themeColor';
 const RootStyle = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 2em;
   background-color: #ddd;
-  /* background-image: linear-gradient(to right bottom, hsla(351, 70%, 90%, 1) 0%, hsla(216, 70%, 90%, 1) 100%); */
   height: 100%;
   width: 100%;
   overflow: hidden;

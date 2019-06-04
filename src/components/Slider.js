@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Check as CheckIcon } from '../style/icons';
+import pointer from '../utils/detectPointer';
 
 const Container = styled.section`
   width: 100%;
@@ -75,10 +76,10 @@ export default class Slider extends Component {
     //
     handle.setupTouchEvents();
 
-    handle.addEventListener('touchmove', e => {
-      if (!e || !e.touches || !e.touches[0]) return;
+    this.pointerMoveEvent = e => {
+      if (pointer.validate(e)) return;
 
-      let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
+      let calculated = ((pointer.clientX(e) - left) / width).toFixed(3);
       if (this.state.precise) {
         calculated = calculated >= 0 && calculated <= 1 ? calculated : calculated > 1 ? 1 : 0;
       } else {
@@ -91,17 +92,21 @@ export default class Slider extends Component {
 
       this.setState({ value: calculated });
       this.props.sendSlider(calculated);
-    }, { passive: true });
+    };
+
+    handle.addEventListener(pointer.start, e => {
+      document.addEventListener(pointer.move, this.pointerMoveEvent, { passive: true });
+    });
+    document.addEventListener(pointer.end, e => {
+      document.removeEventListener(pointer.move, this.pointerMoveEvent);
+      if (this.state.precise) this.setState({ precise: false });
+    });
 
     handle.addEventListener('touchpress', e => {
       this.setState({ precise: true });
     });
     handle.addEventListener('touchtap', e => {
       this.props.tapHandle(e);
-    });
-
-    handle.addEventListener('touchend', e => {
-      if (this.state.precise) this.setState({ precise: false });
     });
   }
   render () {

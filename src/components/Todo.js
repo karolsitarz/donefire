@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { toggleTodo, deleteTodo } from '../actions';
 import { Check as CheckIcon } from '../style/icons';
+import pointer from '../utils/detectPointer';
 
 const StyledTodo = styled.div`
   display: flex;
@@ -58,7 +59,7 @@ const Checkbox = styled.div`
     height: 70%;
     width: 70%;
     position: absolute;
-    left: 50%
+    left: 50%;
     top: 50%;
     pointer-events: none;
     transform: ${props => !props.done ? 'translate3d(-50%, -50%,0) scale(0)' : 'translate3d(-50%, -50%,0) scale(1)'};
@@ -99,9 +100,6 @@ class Todo extends Component {
       this.props.toggleTodo(this.props.id);
     });
     todo.addEventListener('touchpress', e => {
-      // if (window.confirm('delete?')) {
-      //   this.props.deleteTodo(this.props.id);
-      // }
       deleteInit = true;
       this.setState({ moving: true });
     });
@@ -109,8 +107,8 @@ class Todo extends Component {
     let start;
     let end;
 
-    todo.addEventListener('touchmove', e => {
-      end = e.touches[0];
+    this.pointerMoveEvent = e => {
+      end = pointer.clientCObj(e);
       if (deleteInit) {
         deleteInit = false;
         deleteMove = true;
@@ -124,8 +122,12 @@ class Todo extends Component {
           this.setState({ delete: false });
         }
       }
-    }, { passive: true });
-    todo.addEventListener('touchend', e => {
+    };
+
+    this.pointerEndEvent = e => {
+      document.removeEventListener(pointer.move, this.pointerMoveEvent);
+      document.removeEventListener(pointer.end, this.pointerEndEvent);
+
       this.setState({ x: 0, delete: false, moving: false });
 
       if (deleteMove && end.clientX - start.clientX > 50) {
@@ -134,6 +136,11 @@ class Todo extends Component {
 
       deleteInit = false;
       deleteMove = false;
+    };
+
+    todo.addEventListener(pointer.start, e => {
+      document.addEventListener(pointer.move, this.pointerMoveEvent, { passive: true });
+      document.addEventListener(pointer.end, this.pointerEndEvent);
     });
   }
   componentWillUnmount () {

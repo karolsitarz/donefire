@@ -8,6 +8,7 @@ import ListTile from './ListTile';
 const Container = styled.section`
   height: 6em;
   flex-shrink: 0;
+  width: 100%;
   transition:
     opacity .25s ease,
     height .25s ease;

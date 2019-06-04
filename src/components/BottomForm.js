@@ -8,6 +8,7 @@ import Slider from './Slider';
 const StyledScroll = styled.section`
   height: 8em;
   flex-shrink: 0;
+  width: 100%;
   transition:
     opacity .25s ease,
     height .25s ease;

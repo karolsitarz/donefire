@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 
 import { listInputDataChange } from '../actions';
+import pointer from '../utils/detectPointer';
 
 const Track = styled.div`
   height: 1em;
@@ -75,9 +76,9 @@ class ColorPicker extends Component {
     let { left, width } = this.box.getBoundingClientRect();
     window.addEventListener('resize', e => ({ left, width } = this.box.getBoundingClientRect()));
 
-    handle1.addEventListener('touchmove', e => {
+    this.handle1MoveEvent = e => {
       if (!this.state.scrolling1) this.setState({ scrolling1: true });
-      let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
+      let calculated = ((pointer.clientX(e) - left) / width).toFixed(3);
       const low = this.props.data.c2 - 0.1;
       const high = this.props.data.c2 * 1 + 0.1;
 
@@ -89,14 +90,21 @@ class ColorPicker extends Component {
       if (calculated > 1) calculated = 1;
 
       this.props.listInputDataChange({ c1: calculated });
-    }, { passive: true });
-    handle1.addEventListener('touchend', e => {
+    };
+    this.handle1EndEvent = e => {
+      document.removeEventListener(pointer.move, this.handle1MoveEvent);
+      document.removeEventListener(pointer.end, this.handle1EndEvent);
       if (this.state.scrolling1) this.setState({ scrolling1: false });
-    }, { passive: true });
+    };
 
-    handle2.addEventListener('touchmove', e => {
+    handle1.addEventListener(pointer.start, e => {
+      document.addEventListener(pointer.move, this.handle1MoveEvent, { passive: true });
+      document.addEventListener(pointer.end, this.handle1EndEvent, { passive: true });
+    });
+
+    this.handle2MoveEvent = e => {
       if (!this.state.scrolling2) this.setState({ scrolling2: true });
-      let calculated = ((e.touches[0].clientX - left) / width).toFixed(3);
+      let calculated = ((pointer.clientX(e) - left) / width).toFixed(3);
       const low = this.props.data.c1 - 0.1;
       const high = this.props.data.c1 * 1 + 0.1;
 
@@ -108,10 +116,17 @@ class ColorPicker extends Component {
       if (calculated > 1) calculated = 1;
 
       this.props.listInputDataChange({ c2: calculated });
-    }, { passive: true });
-    handle2.addEventListener('touchend', e => {
+    };
+    this.handle2EndEvent = e => {
+      document.removeEventListener(pointer.move, this.handle2MoveEvent);
+      document.removeEventListener(pointer.end, this.handle2EndEvent);
       if (this.state.scrolling2) this.setState({ scrolling2: false });
-    }, { passive: true });
+    };
+
+    handle2.addEventListener(pointer.start, e => {
+      document.addEventListener(pointer.move, this.handle2MoveEvent, { passive: true });
+      document.addEventListener(pointer.end, this.handle2EndEvent, { passive: true });
+    });
   }
   render () {
     return (

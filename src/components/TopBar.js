@@ -5,11 +5,14 @@ import { connect } from 'react-redux';
 import { switchToUI, deleteList, currentListChange, listInputDataChange } from '../actions';
 import { ArrowDown as ArrowDownIcon, Plus as PlusIcon, Trash as TrashIcon } from '../style/icons';
 import TrashButton from './TrashButton';
+import pointer from '../utils/detectPointer';
 
 const StyledTopBar = styled.div`
   height: 2em;
   flex-shrink: 0;
   margin-top: 2em;
+  max-width: 600px;
+  width: 100%;
 `;
 
 const ListName = styled.span`
@@ -111,25 +114,32 @@ class TopBar extends Component {
     };
     let touchStart = { x: 0, y: 0 };
     let touchEnd = { x: 0, y: 0 };
-    touchbar.addEventListener('touchstart', e => {
+
+    touchbar.addEventListener(pointer.start, e => {
       touchStart = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
+        x: pointer.clientX(e),
+        y: pointer.clientY(e)
       };
       touchEnd = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
+        x: pointer.clientX(e),
+        y: pointer.clientY(e)
       };
+
+      document.addEventListener(pointer.move, this.pointerMoveEvent, { passive: true });
+      document.addEventListener(pointer.end, this.pointerEndEvent);
     }, { passive: true });
 
-    touchbar.addEventListener('touchmove', e => {
+    this.pointerMoveEvent = e => {
       touchEnd = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
+        x: pointer.clientX(e),
+        y: pointer.clientY(e)
       };
-    }, { passive: true });
+    };
 
-    touchbar.addEventListener('touchend', e => {
+    this.pointerEndEvent = e => {
+      document.removeEventListener(pointer.move, this.pointerMoveEvent);
+      document.removeEventListener(pointer.end, this.pointerEndEvent);
+
       // distance
       if ((touchEnd.x - touchStart.x) ** 2 + (touchEnd.y - touchStart.y) ** 2 > 6000) {
         const angle = Math.atan2((touchEnd.y - touchStart.y), (touchEnd.x - touchStart.x));
@@ -168,7 +178,7 @@ class TopBar extends Component {
           }
         }
       }
-    });
+    };
   }
   render () {
     let title = 'all tasks';

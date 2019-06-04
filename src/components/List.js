@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import Todo from './Todo';
 
 const StyledList = styled.section`
+  max-width: 600px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex-grow: 1;

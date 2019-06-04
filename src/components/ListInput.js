@@ -9,6 +9,7 @@ import { addList, editList, switchToUI, listInputDataChange } from '../actions';
 const StyledScroll = styled.section`
   height: 14em;
   flex-shrink: 0;
+  width: 100%;
   transition:
     opacity .25s ease,
     height .25s ease;
