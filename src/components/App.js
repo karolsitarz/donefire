@@ -18,6 +18,7 @@ const RootStyle = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
+  --w: ${props => props.$width};
   ${props => props.UI === 'listinput' && css`
     background: #ddd;
   `}
@@ -54,8 +55,18 @@ const RootStyle = styled.div`
 
 // main App
 class App extends Component {
+  constructor (props) {
+    super(props);
+    this.state = { width: '600px' };
+    this.limit = 680;
+  }
+  getWidth () {
+    return Math.max(document.documentElement.clientWidth, window.innerWidth || 0) > this.limit ? '600px' : '100vw - 4em';
+  }
   componentDidMount () {
     themeColor(this.props.currentList, this.props.list);
+    window.addEventListener('resize', e => this.setState({ width: this.getWidth() }));
+    this.setState({ width: this.getWidth() });
   }
   componentDidUpdate () {
     themeColor(this.props.currentList, this.props.list);
@@ -63,6 +74,7 @@ class App extends Component {
   render () {
     return (
       <RootStyle
+        $width={this.state.width}
         $c1={this.props.currentList !== null ? this.props.list[this.props.currentList].c1 : null}
         $c2={this.props.currentList !== null ? this.props.list[this.props.currentList].c2 : null}
         UI={this.props.UI}>

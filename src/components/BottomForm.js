@@ -9,6 +9,7 @@ const StyledScroll = styled.section`
   height: 8em;
   flex-shrink: 0;
   width: 100%;
+  max-width: 600px;
   transition:
     opacity .25s ease,
     height .25s ease;

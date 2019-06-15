@@ -10,7 +10,7 @@ const Container = styled.section`
 
 const Handle = styled.div.attrs(({ $value }) => ({
   style: {
-    transform: `translateY(-50%) translateX(calc(${$value} * (100vw - 4em - 100%)))`
+    transform: `translateY(-50%) translateX(calc(${$value} * (var(--w) - 100%)))`
   }
 }))`
   width: 2.5em;

@@ -24,7 +24,7 @@ const Track = styled.div`
 
 const Handle = styled.div.attrs(({ $value }) => ({
   style: {
-    transform: `translateX(calc(${$value} * (100vw - 4em - 100%)))`
+    transform: `translateX(calc(${$value} * (var(--w) - 100%)))`
   }
 }))`
   height: 1.5em;
